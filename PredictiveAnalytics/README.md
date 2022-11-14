@@ -232,11 +232,79 @@ Dari gambar diatas dapat dilihat bahwa `satisfication level` merupakan kategorik
 
 
 ## Data Preparation
-Pada bagian ini Anda menerapkan dan menyebutkan teknik data preparation yang dilakukan. Teknik yang digunakan pada notebook dan laporan harus berurutan.
 
-**Rubrik/Kriteria Tambahan (Opsional)**: 
-- Menjelaskan proses data preparation yang dilakukan
-- Menjelaskan alasan mengapa diperlukan tahapan data preparation tersebut.
+Pada tahap ini akan preprocess terhadap data yang akan dimasukkan ke dalam model _Machine Learning_ ada beberapa tahapan yang dilakukan, yaitu:
+1. Melakukan encoding pada fitur kategorik
+2. Memisahkan dataset untuk training dan juga test (Dataset splitting)
+3. Melakukan scaling/normalisasi terhadap data set
+
+Pada proses Data Preparation saat ini proses reduksi fitur dengan menggunakan PCA tidak dilakukan karena berdasarkan korelasi matrix, tidak ada fitur selain fitur target yang memiliki korelasi yang kuat.
+
+### Encoding Fitur
+
+Mesin tidak mampu memproses data berupa string secara langsung, sehingga data string atau fitur kategorik perlu dilakukan proses yang disebut `encoding`. Pada projek kali ini encoding berjenis `One Hot Encoding` akan digunakan. Dimana dari fitur yang ada, masing-masing memiliki representasinya sendiri. Contohnya Jika terdapat fitur gender: male dan female, maka hasil One Hot Encodingnya adalah sebagai berikut:
+
+|Index|Sex_female|Sex_male|
+|:----|:---------|-------:|
+|0    |1         | 0      |
+|1    |0         | 1      |
+
+Dari dataset yang ada, hanya terdapat 2 fitur dengan nama kategori yang beragam, yaitu:
+- Department
+- Salary
+
+Library scikit-learn dan pandas memiliki fitur untuk melakukan Encoding secara mudah dengan menggunakan method `get_dummies`. Maka dataset setelah dilakukan One Hot Encoding menjadi seperti berikut
+
+Tabel 5. Data Encoded
+
+|    |   satisfaction_level |   last_evaluation |   number_project |   average_montly_hours |   time_spend_company |   Work_accident |   left |   promotion_last_5years | Department   | salary   |
+|---:|---------------------:|------------------:|-----------------:|-----------------------:|---------------------:|----------------:|-------:|------------------------:|:-------------|:---------|
+|  0 |                 0.38 |              0.53 |                2 |                    157 |                    3 |               0 |      1 |                       0 | sales        | low      |
+|  1 |                 0.8  |              0.86 |                5 |                    262 |                    6 |               0 |      1 |                       0 | sales        | medium   |
+|  2 |                 0.11 |              0.88 |                7 |                    272 |                    4 |               0 |      1 |                       0 | sales        | medium   |
+|  3 |                 0.72 |              0.87 |                5 |                    223 |                    5 |               0 |      1 |                       0 | sales        | low      |
+|  4 |                 0.37 |              0.52 |                2 |                    159 |                    3 |               0 |      1 |                       0 | sales        | low      |
+
+### Dataset Splitting
+
+Untuk setiap proyek _Machine Learning_ perlu dilakukannya proses pemisahan antara data untuk `Training` dan juga untuk `Test` agar tidak terjadi _Overfit_ ataupun _data leakage_ ketika model _Machine Learning_ selesai dibuat. Lebih lanjut fitur _Cross Validation_ juga perlu dilakukan agar datanya lebih konsisten, _Cross Validation_ akan digunakan ketika melakukan Hyperparameter tunning dengan menggunakan `GridSearchCV`.
+
+Dataset ini cukup banyak, totalnya berjumlah 14999 dataset, sehingga pembagian dataset dengan porsi 80% training : 20% testing, sudahlah cukup. Dengan menggunakan Library Scikit-learn proses train test split dapat dengan mudah dilakukan. Random_state yang digunakan adalah *42*. Sehingga Jumlahnya menjadi:
+- Data train: 11999
+- Data test: 3000
+
+### Scaling dan Normalisasi
+
+Dalam pemprosesan data pada _Machine Learning_ melakukan normalisasi terhadap data sangatlah penting, agar tidak terjadi ketidak seimbangan terhadap _weight_/bobot pada data dengan nilai yang tinggi dibandingkan nilai yang rendah. Terdapat beberapa jenis teknik normalisasi/scaling yang sering digunakan. MinMax scaler dan Standard Scaler adalah dua teknik normalisasi yang paling populer.
+
+MinMax Scaler bekerja dengan melakukan normalisasi data menjadi pada rentang tertentu (umumnya 0 hingga 1, atau -1 hingga 1). Sedangkan Standard scaler melakukan proses standarisasi fitur dengan menghilangkan mean dan membuat standard deviasinya data menjadi 1.
+
+Untuk menghindari kebocoran data (_data leakage_) proses standarisasi haruslah terpisah. Dengan menggunakan library scikit-learn prosesnya dalam dilakukan seperti berikut:
+
+Pertama-tama scaler akan melihat persebaran data training dengan menggunakan metode `fit`
+
+`scaler.fit(X_train)`
+
+Selanjutnya data training akan dilakukan normalisasi dengan method `transform`
+
+`scaler.transform(X_train)`
+
+Agar tidak terjadi _data leakage_ data test __tidak boleh__ diikut sertakan dalam proses fit. Dan hanya digunakan ketika melakukan transform
+
+`scaler.transform(X_test)`
+
+Berikut merupakan contoh data train setelah dilakukan proses normalisasi:
+
+Tabel 6. Normalisasi Data
+
+|       |   satisfaction_level |   last_evaluation |   number_project |   average_montly_hours |   time_spend_company |
+|------:|---------------------:|------------------:|-----------------:|-----------------------:|---------------------:|
+| 12896 |            0.474481  |         -0.562644 |         0.162568 |               0.921578 |             0.342509 |
+| 12545 |            0.675614  |          1.65763  |         0.97399  |               0.701313 |             1.02861  |
+| 14833 |           -2.05979   |         -0.971642 |        -1.46027  |               0.921578 |             0.342509 |
+|  8335 |           -0.0886901 |         -1.20536  |        -1.46027  |              -1.50134  |            -0.343595 |
+|  2724 |            0.273349  |         -1.38064  |         0.162568 |               1.00167  |             0.342509 |
+
 
 ## Modeling
 Tahapan ini membahas mengenai model machine learning yang digunakan untuk menyelesaikan permasalahan. Anda perlu menjelaskan tahapan dan parameter yang digunakan pada proses pemodelan.
