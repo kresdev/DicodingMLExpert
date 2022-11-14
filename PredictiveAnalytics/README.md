@@ -17,8 +17,8 @@ Permasalahan ini merupakan salah satu pekerjaan terberat yang harus dilakukan ba
 ### Problem Statements
 Berdasarkan latar belakang tersebut, terdapat beberapa masalah yang harus diselesaikan diantaranya:
 - Bagaimana cara memvisualisasikan data-data referensi?
-- Bagaimana cara mengolah data (_preprocess_) untuk bisa digunakan dalam model _Machine Learning_
-- Model _Machine Learning_ apa yang dapat digunakan pada masalah ini?
+- Bagaimana cara mengolah data (_preprocess_) untuk bisa digunakan dalam model _Machine Learning_?
+- Model _Machine Learning_ apa saja yang dapat digunakan pada masalah ini?
 - Bagaimana cara mengetahui model _Machine Learning_ sudah berjalan dengan baik?
 - Apa faktor-faktor penyebab terjadinya _turn over_ berdasarkan hasil dari _Machine Learning?_
 
@@ -170,7 +170,7 @@ Dari data-data tersebut dapat diambil analisa bahwa:
 2. Karyawan yang meninggalkan perusahaan lebih sediki dibanding yang tetap tinggal (imbalance)
 3. Jumlah karyawan yang belum dipromosikan leibh banyak dan tidak seimbang
 4. Departemen **sales** memiliki karyawan yang paling banyak
-5. Karyawan dengan kategori tinggi memiliki jumlah paling rendah
+5. Karyawan dengan kategori gaji paling tinggi memiliki jumlah paling rendah
 
 #### 4.2 Univerate Analysis Fitur Numerik
 
@@ -307,12 +307,113 @@ Tabel 6. Normalisasi Data
 
 
 ## Modeling
-Tahapan ini membahas mengenai model machine learning yang digunakan untuk menyelesaikan permasalahan. Anda perlu menjelaskan tahapan dan parameter yang digunakan pada proses pemodelan.
 
-**Rubrik/Kriteria Tambahan (Opsional)**: 
-- Menjelaskan kelebihan dan kekurangan dari setiap algoritma yang digunakan.
-- Jika menggunakan satu algoritma pada solution statement, lakukan proses improvement terhadap model dengan hyperparameter tuning. **Jelaskan proses improvement yang dilakukan**.
-- Jika menggunakan dua atau lebih algoritma pada solution statement, maka pilih model terbaik sebagai solusi. **Jelaskan mengapa memilih model tersebut sebagai model terbaik**.
+Pada projek ini terdapat 3 macam algoritma _Machine Learning_ yang digunakan yaitu:
+1. KNN
+2. SVM
+3. Random Forest
+
+Semua model dilatih dengan menggunakan parameter dasar. Selanjutnya akan dilakukan _tunning_ pada beberapa parameter baik secara konvensional ataupun dengan menggunakan `GridSearchCV`
+
+### K-Nearest Neighbors (KNN)
+
+KNN adalah salah satu algoritma _Machine Learning_ bertipe _supervised_ dimana dibutuhkannya suatu label. KNN bekerja dengan cara mengidentifikasikan jarak antara 'tetangga', dimana `K` pada KNN adalah jumlah tetangga yang akan dilihat. Tahapan cara kerja KNN adalah sebagai berikut:
+
+1. Menentukan banyaknya jumlah tetangga yang akan dipakai (K)
+2. Menghitung jarak antara dokumen testing dan training dengan menggunakan metode distance (umumnya Euclidean atau Manhatan).
+3. Mengurutkan data berdasarkan jarak terkecil.
+4. Menentukan kelompok testing berdasarkan jumlah tetangga (K) yang telah dipilih.
+
+__Keuntungan__
+
+1. Algortima KNN sederhana dan mudah diimplementasikan
+2. Algoritma multifungsi dapat digunakan untuk kasus klasifikasi, regresi, dan pencarian.
+3. Tidak ada periode training, sehingga data baru lebih mudah ditambahkan.
+
+__Kekurangan__
+
+1. Tidak berjalan secara baik pada dataset yang besar. Perlu dilakukannya perhitungan jarak meningkatkan beban komputasi mesin.
+2. Tidak berjalan baik pada data berdimensi tinggi. Karena KNN berdasarkan perhitungan jarak, akan lebih sulit melakukannya pada dimensi tinggi.
+3. Membutuhkan scaling fitur. Perhitungan jarak dengan data acuan yang berbeda-beda akan membuat hasilnya tidak akurat, sehingga perlu dilakukannya scaling/normalisasi data.
+
+Pada projek ini, pertama-tama KNN akan menggunakan __n_neighbors=10__ tetangga terdekat. Dan setelahnya akan dilakukan proses _tunning_ secara manual untuk mencari nilai K terbaik dari 1-20 tetangga hingga mendapatkan akurasi testing yang paling tinggi. Perhitungan jarak antar tetangga yang dipakai adalah Eculidean distance.
+
+### Support Vector Machine (SVM)
+
+Sama dengan KNN, SVM merupakan metode _supervised learning_. Dimana terdapat dua tipe SVM yang umum digunakan yaitu _Support Vector Classificatioin (SVC)_ dan juga _Support Vector Regression (SVR)_. SVM juga dapat mengatasi masalah klasifikasi dan regresi baik secara _linear_ ataupun _non-linear_
+
+Cara kerja SVM adalah dengan menemukan _hyperplace_ (jalan raya) terbaik dengan memaksimalkan jarak antar kelas sehingga dapat memisahkan titik-titik  pada input. SVM dulunya dikenal sebagai maximum margin classifier. Ternyata alternatif untuk memperoleh maximum margin adalah dengan mencari support vector . Itulah mengapa nama algoritma ini juga disebut sebagai Support Vector Machine, yakni mesin pencari support vector.Gambar berikut menunjukan ilustrasi pada SVM.
+
+![SVM](https://user-images.githubusercontent.com/60245989/201678523-204899d3-af83-4e12-991f-b20719c80124.png)
+
+Gambar 7. Ilustrasi SVM
+
+Salah satu parameter penting pada SVM adalah __C-Penalty Parameter__ dimana:
+- Semakin besar __C__ -> Semakin besar penalty terhadap kesalah -> lebih sensitif
+- Semakin kecil __C__ -> Semakin toleran terhadap kesalahan -> lebih smooth
+
+Selain itu pada data yang lebih kompleks, data-data dapat ditransformasikan ke dalam dimensi lain dengan mengubah jenis kernelnya. Terdapat parameter lainnya yaitu $\gamma$ kernel coefficient, dimana:
+
+- Semakin besar $\gamma$ -> semakin detail oriented -> lebih sensitif
+- Semakin kecil $\gamma$ -> semakin melihat big picture -> lebih smooth
+
+__Keuntungan__
+
+1. SVM bekerja relatif baik ketika terdapat pemisahan yang cukup jelas antar kelas.
+2. SVM lebih efektif pada data berdimensi tinggi.
+3. SVM relatif lebih efektif secara memori.
+
+__Kekurangan__
+
+1. SVM tidak cocok untuk dataset yang besar.
+2. SVM tidak bekerja secara baik ketika dataset terdapat banyak _noise_ contohnya pada target kelas yang overlap
+3. SVM Membutuhkan waktu training yang relatif lebih lama.
+
+Pada projek ini, pertama-tama SVM akan menggunakan nilai default dimana nilai C=1. Dan setelahnya akan dilakukan proses _tunning_ secara manual untuk mencari nilai C terbaik dari 1-1000 dengan skala pengali 10 hingga mendapatkan akurasi testing yang paling tinggi. Kernel yang digunakan bernilai default.
+
+### Random Forest
+
+Random Forest merupakan salah satu metode dalam _Decision Tree_ yang menggunakan teknik bagging, dimana beberapa model bekerja bersama-sama (_ensemble_) untuk mendapatkan suatu keputusan, sehingga tingkat keberhasilannya akan semakin tinggi. 
+
+_Decision Tree_ sendiri adalah suatu diagram alir yang terdiri dari _ node_ yang berisikan _root_ dan juga _leaf_, dimana masing-masingnya akan memecahkan masalah secara independen lalu menggabungkanya. Berikut adalah ilustrasi dari Random Forest.
+
+![Random Forest](https://user-images.githubusercontent.com/60245989/201685936-7cf555bf-1b51-4e89-9519-18ec8a040a6d.gif)
+
+Gambar 8. Ilustrasi Random Forest (source:  Tensorflow Blog)
+
+Terdapat beberapa parameter pada Random Forest diantaranya:
+- n_estimator -> jumlah tress (pohon).
+- max_depth -> kedalaman suatu cabang pohon (percabangan/pembelahan pohon).
+- min_sample_leaf -> minimal leaf node yang ada.
+
+__Kelebihan__
+
+1. Random Forest berbasis _bagging_ dan menggunakan _ensemble learning_ dimana dapat mengurangi masalah _overfitting_ pada _decision tree_ dan juga mengurangi _variance_ sehingga dapat meningkatkan akurasai.
+2. Random Forest dapat menangani _missing value_.
+3. Random Forest tidak membutuhkan fitur scaling.
+4. Random Forest robust terhadap outliers.
+5. Random Forest memiliki efek yang rendah terhadap _noise_ dan relatif stabil.
+
+__Kekurangan__
+
+1. Random Forest memiliki kompleksitas yang tinggi.
+2. Random Forest memiliki training periode yang lama, sehingga membutuhkan mesin komputasi yang lebih baik.
+
+Pada projek ini nilai parameter awal Random Forest Classifier adalah sebagai berikut: n_estimators=5, max_depth=5, random_state=42, n_jobs=-1. 
+
+Setelahnya dilakukan _tunning_ dengan menggunakan metode GridSearchCV. Metode ini digunakan untuk melakukan _tunning_ parameter-parameter algoritma secara otomatis, dan juga ditambah dengan melakukan _k fold cross validation_ untuk mendapatkan parameter terbaik. Kelebihan dan kekurangan dari GridSearch adalah sebagai berikut:
+
+- Input berupa semua kombinasi hyperparameter yang ingin dicoba.
+- Menjamin score terbaik dari semua kombinasi.
+- Komputasi berat karena semua kombinasi dilakukan.
+- Tidak cocok dipakai untuk algoritma dengan banyak hyperparameter.
+
+Pada projek kali ini parameter yang digunakan pada Random Forest adalah sebagai berikut:
+- "n_estimators": [25, 50, 100],
+- "max_depth": [10, 20, 30],
+- "min_samples_leaf": [1, 5, 10]
+
+GridSearch akan secara otomatis menentukan model dengan hyperparameter terbaik setelah juga melakukan _cross validation_.
 
 ## Evaluation
 Pada bagian ini anda perlu menyebutkan metrik evaluasi yang digunakan. Lalu anda perlu menjelaskan hasil proyek berdasarkan metrik evaluasi yang digunakan.
