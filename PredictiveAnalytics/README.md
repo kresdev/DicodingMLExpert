@@ -37,7 +37,7 @@ Menjelaskan tujuan dari pernyataan masalah:
 
 Solusi yang dapat dilakukan sebagai berikut:
 - Membandingkan hasil dari tiga algoritma yang ada, serta melakukan _tunning_ parameter baik secara konvensional (mencari nilai K dan C yang terbaik pada KNN dan SVM), ataupun menggunakan metode **GridSearchCV** pada algoritma Random Forest.
-- Jika data merupakan data klasifikasi yang tidak seimbang (_imbalance dataset_) metrik evaluasi akan menggunakan nilai **F1-Score**
+- Jika data merupakan data klasifikasi yang tidak seimbang (_imbalance dataset_) metrik evaluasi akan menggunakan nilai **F1-Score**.
 
 ***
 ## Data Understanding
@@ -117,8 +117,8 @@ Tabel 3. Unique Value Dataset
 
 
 Data-data tersebut memiliki 3 jenis tipe data yang berbeda yaitu float64, int64, dan juga object. Namun secara garis besar data-data tersebut dapat dikelompokkan secara numerik dan kategorik:
-- Numerik: satisfaction_level, last_evaluation, number_project, average_montly_hours, time_spend_company 
-- Kategorik: Work_accident, promoted_last_5_years, left, Department, salary
+- Numerik: satisfaction_level, last_evaluation, number_project, average_montly_hours, time_spend_company.
+- Kategorik: Work_accident, promoted_last_5_years, left, Department, salary.
 
 Setelah dilakukan pengecekan dengan menggunakan `df.isnull()` dan juga `df.isna()` _tidak ada data yang kosong_
 
@@ -146,13 +146,13 @@ Data numerik pada dataset hanyalah:
 - average_montly_hours
 - time_spend_company 
 
-Sehingga hanya data tersebut saja yang akan dilakukan pengecekan. Diagram boxplot digunakan untuk melakukan pengecekan pada _outliers_, gambar berikut menunjukan boxplot untuk setiap kategori numerik
+Sehingga hanya data tersebut saja yang akan dilakukan pengecekan. Diagram boxplot digunakan untuk melakukan pengecekan pada _outliers_, gambar berikut menunjukan boxplot untuk setiap kategori numerik.
 
 ![Outliers](https://user-images.githubusercontent.com/60245989/201568021-24de7a87-8845-4761-96f7-444f248d1108.png)
 
 Gambar 2. Pengecekan Outliers pada Fitur Numerik
 
-Dari data di atas hanya `time_spend_company` saja yang memiliki ___outliers___ walaupun datanya sedikit, namun data _time_spend_company_ pada perusahaan berpengaruh terhadap keputusan pergi atau tidaknya karyawan dari suatu perusahaan, sehingga data `time_spend_company` __tidak dibuang__
+Dari data di atas hanya `time_spend_company` saja yang memiliki ___outliers___ walaupun datanya sedikit, namun data _time_spend_company_ pada perusahaan berpengaruh terhadap keputusan pergi atau tidaknya karyawan dari suatu perusahaan, sehingga data `time_spend_company` __tidak dibuang__.
 
 
 ### 4. _Univariate Analysis_
@@ -184,8 +184,8 @@ Gambar 3. _Univariate Analysis_ Fitur Numerik
 
 Dari data-data tersebut dapat diambil analisa bahwa:
 
-1. Satisfication level, Last Evaluation, Number Project, danAvarage Montly hours karyawan beragam
-2. Jumlah karyawan dengan jumlah tahun kerja 3 tahun paling dominan
+1. Satisfication level, Last Evaluation, Number Project, danAvarage Montly hours karyawan beragam.
+2. Jumlah karyawan dengan jumlah tahun kerja 3 tahun paling dominan.
 
 ### 5. _Multivariate Analysis_
 
@@ -201,11 +201,11 @@ Gambar 4. _Multivariate Analysis_ Fitur Kategorik
 
 Dari data-data tersebut dapat dianalisa bahwa:
 
-1. Jumlah data karywan yang pergi dan stay di perusahaan tidak seimbang (imbalance dataset)
-2. Karyawan yang **belum** pernah mengalami work accident lebih banyak meninggalkan perusahaan
-3. Karyawan yang **belum** dipromosikan dalam 5 tahun terakhir lebih banyak meninggalkan perusahaan
-4. Departemen **sales** memiliki karyawan yang paling banyak meninggalkan perusahaan
-5. Karyawan dengan gaji kategori **rendah** paling banyak meninggalkan karyawan
+1. Jumlah data karywan yang pergi dan stay di perusahaan tidak seimbang (imbalance dataset).
+2. Karyawan yang **belum** pernah mengalami work accident lebih banyak meninggalkan perusahaan.
+3. Karyawan yang **belum** dipromosikan dalam 5 tahun terakhir lebih banyak meninggalkan perusahaan.
+4. Departemen **sales** memiliki karyawan yang paling banyak meninggalkan perusahaan.
+5. Karyawan dengan gaji kategori **rendah** paling banyak meninggalkan karyawan.
 
 #### 5.2 _Multivariate Analysis_ Fitur Numerik
 
@@ -216,11 +216,11 @@ Untuk melakukan analisa _Multivariate_ pada fitur numerik, Histogram digunakan. 
 Gambar 5. _Multivariate Analysis_ Fitur Numerik
 
 Dari data-data tersebut dapat dianalisa bahwa:
-1. Karyawan yang pergi meninggalkan perusahaan adalah karyawan dengan satisfication level rendah (0.1) dan menengah  (0.4)
-2. Karyawan dengan penilain buruk (<0.5) dan penilaian baik (>0.8) sama-sama pergi dari perusahaan
-3. Karyawan dengan jumlah projek **terendah (2)** pergi meninggalkan perusahaan
-4. Karyawan dengan jumlah jam paling sedikit setiap bulannya (<160 jam) paling banyak pergi meninggalkan perusahaan
-5. Karyawan dengan waktu bersama perusahaan **3 tahun** paling banyak meninggalkan perusahaan
+1. Karyawan yang pergi meninggalkan perusahaan adalah karyawan dengan satisfication level rendah (0.1) dan menengah  (0.4).
+2. Karyawan dengan penilain buruk (<0.5) dan penilaian baik (>0.8) sama-sama pergi dari perusahaan.
+3. Karyawan dengan jumlah projek **terendah (2)** pergi meninggalkan perusahaan.
+4. Karyawan dengan jumlah jam paling sedikit setiap bulannya (<160 jam) paling banyak pergi meninggalkan perusahaan.
+5. Karyawan dengan waktu bersama perusahaan **3 tahun** paling banyak meninggalkan perusahaan.
 
 ### 6. Korelasi Metrik Fitur
 
@@ -230,15 +230,15 @@ Korelasi antar fitur dapat dilakukan dengan menggunakan fitur `corr()` pada Pand
 
 Gambar 6. Metrik Korelasi Fitur
 
-Dari gambar diatas dapat dilihat bahwa `satisfication level` merupakan kategorik yang paling berpengaruh terhadap perginya karyawan (`left`) disusul dengan `Work_accident` dan juga `time_spend_company`
+Dari gambar diatas dapat dilihat bahwa `satisfication level` merupakan kategorik yang paling berpengaruh terhadap perginya karyawan (`left`) disusul dengan `Work_accident` dan juga `time_spend_company`.
 
 ***
 ## _Data Preparation_
 
 Pada tahap ini akan dilakukan _preprocessing_ terhadap data yang akan dimasukkan ke dalam model _Machine Learning_, ada beberapa tahapan yang dilakukan, yaitu:
-1. Melakukan _encoding_ pada fitur kategorik
-2. Memisahkan dataset untuk training dan juga test (Dataset splitting)
-3. Melakukan _scaling_/normalisasi terhadap dataset
+1. Melakukan _encoding_ pada fitur kategorik.
+2. Memisahkan dataset untuk training dan juga test (Dataset splitting).
+3. Melakukan _scaling_/normalisasi terhadap dataset.
 
 Pada proses _Data Preparation_ saat ini proses reduksi fitur dengan menggunakan PCA tidak dilakukan karena berdasarkan korelasi metrik, tidak ada fitur selain fitur target yang memiliki korelasi yang kuat.
 
@@ -315,7 +315,7 @@ Pada projek ini terdapat 3 macam algoritma _Machine Learning_ yang digunakan yai
 2. SVM
 3. Random Forest
 
-Semua model dilatih dengan menggunakan parameter dasar. Selanjutnya akan dilakukan _tunning_ pada beberapa parameter baik secara konvensional ataupun dengan menggunakan `GridSearchCV`
+Semua model dilatih dengan menggunakan parameter dasar. Selanjutnya akan dilakukan _tunning_ pada beberapa parameter baik secara konvensional ataupun dengan menggunakan `GridSearchCV`.
 
 ### K-Nearest Neighbors (KNN)
 
@@ -501,7 +501,7 @@ Random Forest basic memiliki kekeliruan dalam memprediksi nilai 1 (True), ini se
 
 ### Feature Importance
 
-Tujuan akhir dari proyek ini bukan hanya menemukan model dengan tingkat akurasi terbaik.Tapi mengetahui fitur apa yang paling berpengaruh terhadap perginya seorang karyawan dari suatu perusahaan. Setelah menentukan model terbaik yaitu Random Forest dengan GridSearch, hal selanjutnya adalah mengetahui fitur yang paling penting untuk direkomendasikan kepada bagian HR. Random Forest sudah memiliki data fitur pada bagian `feature_importances_` kita dapat langsung memanggilnya. Hasilnya adalah sebagai berikut
+Tujuan akhir dari proyek ini bukan hanya menemukan model dengan tingkat akurasi terbaik. Tapi mengetahui fitur apa yang paling berpengaruh terhadap perginya seorang karyawan dari suatu perusahaan. Setelah menentukan model terbaik yaitu Random Forest dengan GridSearch, hal selanjutnya adalah mengetahui fitur yang paling penting untuk direkomendasikan kepada bagian HR. Random Forest sudah memiliki data fitur pada bagian `feature_importances_` kita dapat langsung memanggilnya. Hasilnya adalah sebagai berikut
 
 ![Feature Importance](https://user-images.githubusercontent.com/60245989/201806521-fce71354-d5ef-435a-b971-250defa1169b.png)
 
