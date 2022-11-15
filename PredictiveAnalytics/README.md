@@ -2,16 +2,18 @@
 ***
 # HR Analytics Turn Over Rate
 
+***
 ## Domain Proyek
 
 Karyawan adalah salah satu aset berharga bagi suatu perusahaan. Baik atau buruknya suatu perusahaan dan juga perkembangannya salah satu faktor terbesarnya adalah karyawan, terutama karyawan yang memiliki kualitas baik.
 
-Namun ditengah perkembangan jaman yang dinamik dan juga penuh kompetisi, sering kali karyawan berpindah-pindah perusahaan. Akibatnya perusahaan terkena dampak buruknya. Berdasarkan Work Institue pada tahun 2019, _turn over_ karyawan memiliki nilai _cost_ bisnis lebih dari 600 miliar dollar per tahunnya [1]. _Cost_ tersebut bukan hanya soal biaya, namun juga waktu. Akhirnya berbagai macam projek menjadi terhambat sehingga perkembangan perusahaan juga menjadi imbasnya.
+Namun ditengah perkembangan zaman yang dinamik dan juga penuh kompetisi, sering kali karyawan berpindah-pindah perusahaan. Akibatnya perusahaan terkena dampak buruknya. Berdasarkan Work Institue pada tahun 2019, _turn over_ karyawan memiliki nilai _cost_ bisnis lebih dari 600 miliar dollar per tahunnya [1]. _Cost_ tersebut bukan hanya soal biaya, namun juga waktu. Akhirnya berbagai macam proyek menjadi terhambat sehingga perkembangan perusahaan juga menjadi imbasnya.
 
 Telah terdapat banyak studi yang dilakukan untuk mengetahui penyebab terjadinya _turn over_ atau _attrition_ pada karyawan seperti pada Rabiyathul, et.al [2] dan juga Walid, et.al [3]. Dimana faktor-faktor penyebabnya bisa terjadi akibat dari stres, kepuasaan pekerjaan (_satisfication_), lingkungan kerja, _rewards_, gaji dan lain sebagainya.
 
-Permasalahan ini merupakan salah satu pekerjaan terberat yang harus dilakukan bagian Human Resource (HR) agar tetap dapat membuat karyawan-karyawan terbaiknya bekerja secara penuh untuk perusahaan (loyal). Sehingga HR perlu mengetahui faktor-faktor terbesar yang menentukan seorang karyawan pergi meninggalkan perusahaan. Dengan menggunakan _Machine Learning_, faktor-faktor tersebut dapat dianalisa dengan lebih mudah. Sehingga HR dapat mencegah _turn over_ atau setidaknya meminimalisir hal tersebut dengan meningkatkan faktor-faktor penyebabnya.
+Permasalahan ini merupakan salah satu pekerjaan terberat yang harus dilakukan bagian _Human Resource_ (HR) agar tetap dapat membuat karyawan-karyawan terbaiknya bekerja secara penuh untuk perusahaan (loyal). Sehingga HR perlu mengetahui faktor-faktor terbesar yang menentukan seorang karyawan pergi meninggalkan perusahaan. Dengan menggunakan _Machine Learning_, faktor-faktor tersebut dapat dianalisa dengan lebih mudah. Sehingga HR dapat mencegah _turn over_ atau setidaknya meminimalisir hal tersebut dengan menghindari faktor-faktor penyebabnya.
 
+***
 ## Business Understanding
 
 ### Problem Statements
@@ -27,16 +29,17 @@ Berdasarkan latar belakang tersebut, terdapat beberapa masalah yang harus disele
 Menjelaskan tujuan dari pernyataan masalah:
 - Melakukan _Exploratory Data Analysis_ (EDA) secara _univariate_ dan _multivariate_ untuk mengetahui data kasar secara grafik.
 - Melakukan tahapan-tahapan _preprocessing_ pada data berdasarkan hasil EDA dan juga analisa awal data.
-- Menggunakan model _Machine Learning_ umum seperti **KNN**, **SVM** dan juga **Random Forest**, dan juga melakukan _hyper parameter tunning_ pada masing-masing model.
+- Menggunakan model _Machine Learning_ umum seperti **KNN**, **SVM** dan **Random Forest**, serta melakukan _hyper parameter tunning_ pada masing-masing model.
 - Mengetahui metrik evaluasi apa yang paling tepat untuk mendapatkan akurasi yang terbaik.
 - Melakukan _Feature Importance_ setelah model _Machine Learning_ terbaik ditemukan.
 
 ### Solution Statement
 
 Solusi yang dapat dilakukan sebagai berikut:
-- Membandingkan hasil dari tiga algoritma yang ada, dan juga melakukan _tunning_ parameter baik secara konvensional (mencari nilai K dan C yang terbaik pada KNN dan SVM), ataupun menggunakan metode **GridSearchCV** pada algoritma Random Forest.
-- Jika data merupakan data klasifikasi yang tidak seimbang (_imbalance dataset_) metrik evaluasi akan menggunakan nilai **f1 score**
+- Membandingkan hasil dari tiga algoritma yang ada, serta melakukan _tunning_ parameter baik secara konvensional (mencari nilai K dan C yang terbaik pada KNN dan SVM), ataupun menggunakan metode **GridSearchCV** pada algoritma Random Forest.
+- Jika data merupakan data klasifikasi yang tidak seimbang (_imbalance dataset_) metrik evaluasi akan menggunakan nilai **F1-Score**
 
+***
 ## Data Understanding
 
 Dataset yang digunakan adalah HR Analytics yang berasal dari [Kaggle](https://www.kaggle.com/datasets/giripujar/hr-analytics)
@@ -53,25 +56,24 @@ Author | Giri Pujar
 Size | 567 kB
 
 Data dengan nama `HR_comma_sep.csv` berisikan 14999 baris dan 10 kolom. Dimana 10 kolom tersebut menjelaskan bebearap fitur yaitu:
-- satisfaction_level: Angka kepuasan yang dibeirkan karyawan (0-1)
+- satisfaction_level: Angka kepuasan yang diberikan karyawan (0-1)
 - last_evaluation: Angka penilaian dari manager (0-1)
 - number_project: Jumlah projek yang pernah dikerjakan karyawan
 - average_monthly_hours: Total jam kerja per bulan
 - time_spend_company: Total masa kerja dalam tahun
-- Work_accident: Dummy variable terjadinya kecelakaan: Ya (1), Tidak (0)
+- work_accident: Dummy variable terjadinya kecelakaan: Ya (1), Tidak (0)
 - left: Dummy variable: Keluar (1), Tetap (0)
 - promoted_last_5years: Dummy variable, Dipromosikan (1), Tidak dipromosikan(0)
-- sales: Nama department (sales,technical,support,IT, product,marketing, other)
-- salary: 3-level kategori sallary (low, medium, high)
+- department: Nama department (sales,technical,support,IT, product,marketing, other)
+- salary: 3-level kategori salary (low, medium, high)
 
-***
 __Persiapan Data dan Exploratory Data Analysis (EDA)__
-1. Melakukan _import_ data dari csv dengan menggunakan pandas
-2. Melakukan pengecekan data secara umum, dan juga data yang kosong (null dan NA)
-3. Melakukan pengecekan Outlier
-4. Melakukan Univariate Analysis pada fitur numerik dan kategorik
-5. Melakukan Multivariate Analysis pada fitur numerik dan kategorik
-6. Melakukan Korelasi Matrix untuk masing-masing fitur
+1. Melakukan _import_ data dari csv dengan menggunakan Pandas.
+2. Melakukan pengecekan data secara umum, dan juga data yang kosong (null dan NA).
+3. Melakukan pengecekan _Outlier_.
+4. Melakukan _Univariate Analysis_ pada fitur numerik dan kategorik.
+5. Melakukan _Multivariate Analysis_ pada fitur numerik dan kategorik.
+6. Melakukan Korelasi Metrik untuk masing-masing fitur.
 
 ### 1. Import data dengan Pandas
 
@@ -135,7 +137,7 @@ Tabel 4. Statistik Dataset
 | 75%   |             0.82     |          0.87     |          5       |               245      |              4       |        0        |     0        |               0         |
 | max   |             1        |          1        |          7       |               310      |             10       |        1        |     1        |               1         |
 
-### 3. Pengecekan Outlier
+### 3. Pengecekan _Outlier_
 
 Data numerik pada dataset hanyalah: 
 - satisfaction_level
@@ -144,58 +146,58 @@ Data numerik pada dataset hanyalah:
 - average_montly_hours
 - time_spend_company 
 
-Sehingga hanya data tersebut saja yang akan dilakukan pengecekan. Diagram boxplot digunakan untuk melakukan pengecekan pada outliers, gambar berikut menunjukan boxplot untuk setiap kategori numerik
+Sehingga hanya data tersebut saja yang akan dilakukan pengecekan. Diagram boxplot digunakan untuk melakukan pengecekan pada _outliers_, gambar berikut menunjukan boxplot untuk setiap kategori numerik
 
 ![Outliers](https://user-images.githubusercontent.com/60245989/201568021-24de7a87-8845-4761-96f7-444f248d1108.png)
 
 Gambar 2. Pengecekan Outliers pada Fitur Numerik
 
-Dari data di atas hanya `time_spend_company` saja yang memiliki __outliers__ walaupun datanya sedikit, namun data lamanya tahun pada perusahaan berpengaruh terhadap keputusan pergi atau tidaknya karyawan dari suatu perusahaan, sehingga data `time_spend_company` __tidak dibuang__
+Dari data di atas hanya `time_spend_company` saja yang memiliki ___outliers___ walaupun datanya sedikit, namun data _time_spend_company_ pada perusahaan berpengaruh terhadap keputusan pergi atau tidaknya karyawan dari suatu perusahaan, sehingga data `time_spend_company` __tidak dibuang__
 
 
-### 4. Univariate Analysis
+### 4. _Univariate Analysis_
 
-Pada analisa univariate, setiap kategori akan dilihat secara masing-masing.
+Pada analisa _Univariate_, setiap kategori akan dilihat secara masing-masing.
 
-#### 4.1 Univerate Analysis Fitur Kategorik
+#### 4.1 _Univerate Analysis_ Fitur Kategorik
 
-Untuk melakukan analisa Univariate pada fitur kategorik, diagram bar digunakan. Gambarnya adalah sebagai berikut:
+Untuk melakukan analisa _Univariate_ pada fitur kategorik, diagram bar digunakan. Gambarnya adalah sebagai berikut:
 
 ![Kategorik](https://user-images.githubusercontent.com/60245989/201568739-ed827a81-58df-4289-8693-96f0b4d5a6e2.png)
 
-Gambar 3. Univariate Analysis Fitur Kategorik
+Gambar 3. _Univariate Analysis_ Fitur Kategorik
 
 Dari data-data tersebut dapat diambil analisa bahwa:
-1. Jumlah data karyawan yang tidak mengalami work accident lebih banyak dan tidak seimbang (imbalance)
-2. Karyawan yang meninggalkan perusahaan lebih sediki dibanding yang tetap tinggal (imbalance)
-3. Jumlah karyawan yang belum dipromosikan leibh banyak dan tidak seimbang
-4. Departemen **sales** memiliki karyawan yang paling banyak
-5. Karyawan dengan kategori gaji paling tinggi memiliki jumlah paling rendah
+1. Jumlah data karyawan yang tidak mengalami work accident lebih banyak dan tidak seimbang (imbalance).
+2. Karyawan yang meninggalkan perusahaan lebih sedikiT dibanding yang tetap tinggal (imbalance).
+3. Jumlah karyawan yang belum dipromosikan lebih banyak dan tidak seimbang.
+4. Departemen **sales** memiliki karyawan yang paling banyak.
+5. Karyawan dengan kategori gaji paling tinggi memiliki jumlah paling rendah.
 
-#### 4.2 Univerate Analysis Fitur Numerik
+#### 4.2 _Univerate Analysis_ Fitur Numerik
 
-Untuk melakukan analisa Univariate pada fitur numerik, sebuah historgram digunakan dengan melakukan binning 20. Diagramnya adalah sebagai berikut:
+Untuk melakukan analisa Univariate pada fitur numerik, sebuah historgram digunakan dengan melakukan _binning_ sebesar 20. Diagramnya adalah sebagai berikut:
 
 ![numeriks](https://user-images.githubusercontent.com/60245989/201568918-dfa4f62a-8a39-420b-8be4-adf2894a468b.png)
 
-Gambar 3. Univariate Analysis Fitur Numerik
+Gambar 3. _Univariate Analysis_ Fitur Numerik
 
 Dari data-data tersebut dapat diambil analisa bahwa:
 
 1. Satisfication level, Last Evaluation, Number Project, danAvarage Montly hours karyawan beragam
 2. Jumlah karyawan dengan jumlah tahun kerja 3 tahun paling dominan
 
-### 5. Multivariate Analysis
+### 5. _Multivariate Analysis_
 
-Pada analisa multivariate 2 kategori ada dibandingkan. Kategori `left` akan menjadi acuan terhadap kategori lainnya.
+Pada analisa _Multivariate_ 2 kategori ada dibandingkan. Kategori `left` akan menjadi acuan terhadap kategori lainnya.
 
-#### 5.1 Multivariate Analysis Fitur Kategorik
+#### 5.1 _Multivariate Analysis_ Fitur Kategorik
 
-Untuk melakukan analisa Multivariate pada fitur kategorik, diagram bar digunakan. Gambarnya adalah sebagai berikut:
+Untuk melakukan analisa _Multivariate_ pada fitur kategorik, diagram bar digunakan. Gambarnya adalah sebagai berikut:
 
 ![MultivariateKategorik](https://user-images.githubusercontent.com/60245989/201570153-85f189bd-22e5-4e27-b511-5458bfca2419.png)
 
-Gambar 4. Multivariate Analysis Fitur Kategorik
+Gambar 4. _Multivariate Analysis_ Fitur Kategorik
 
 Dari data-data tersebut dapat dianalisa bahwa:
 
@@ -205,13 +207,13 @@ Dari data-data tersebut dapat dianalisa bahwa:
 4. Departemen **sales** memiliki karyawan yang paling banyak meninggalkan perusahaan
 5. Karyawan dengan gaji kategori **rendah** paling banyak meninggalkan karyawan
 
-#### 5.1 Multivariate Analysis Fitur Kategorik
+#### 5.2 _Multivariate Analysis_ Fitur Numerik
 
-Untuk melakukan analisa Multivariate pada fitur numerik, Histogram digunakan. Pada analisa ini hanya dilihat data-data dari setiap fitur dimana bersinggunan juga dengan `left` (Hanya data karyawan yang telah pergi meninggal perusahaan yang ditampilkan). Diagramnya adalah sebagai berikut:
+Untuk melakukan analisa _Multivariate_ pada fitur numerik, Histogram digunakan. Pada analisa ini hanya dilihat data-data dari setiap fitur dimana bersinggungan juga dengan `left` (Hanya data karyawan yang telah pergi meninggal perusahaan yang ditampilkan). Diagramnya adalah sebagai berikut:
 
 ![Multivariatenumeriks](https://user-images.githubusercontent.com/60245989/201570687-089e70c5-1008-4ba7-8160-806b02279000.png)
 
-Gambar 5. Multivariate Analysis Fitur Numerik
+Gambar 5. _Multivariate Analysis_ Fitur Numerik
 
 Dari data-data tersebut dapat dianalisa bahwa:
 1. Karyawan yang pergi meninggalkan perusahaan adalah karyawan dengan satisfication level rendah (0.1) dan menengah  (0.4)
@@ -220,27 +222,27 @@ Dari data-data tersebut dapat dianalisa bahwa:
 4. Karyawan dengan jumlah jam paling sedikit setiap bulannya (<160 jam) paling banyak pergi meninggalkan perusahaan
 5. Karyawan dengan waktu bersama perusahaan **3 tahun** paling banyak meninggalkan perusahaan
 
-### 6. Korelasi Matrix Fitur
+### 6. Korelasi Metrik Fitur
 
-Korelasi antar fitur dapat dilakukan dengan menggunakan fitur `corr()` pada Pandas. Dengan korelasi matrix dapat dilihat hubungan antara dua jenis fitur, dimana nilainya akan berkisar dari -1 hingga +1. Semakin mendekati +1 berartikan bahwa kedua kategori memiliki hubungan kuat, sedangkan semakin mendekati -1 berarti kedua kategori memiliki hubungan kuat namun dalam arah yang berkebalikan (Semakin kecil nilainya semakin besar korelasinya). Berikut adalah korelasi matrix pada masing-masing fitur.
+Korelasi antar fitur dapat dilakukan dengan menggunakan fitur `corr()` pada Pandas. Dengan korelasi metrik dapat dilihat hubungan antara dua jenis fitur, dimana nilainya akan berkisar dari -1 hingga +1. Semakin mendekati +1 berartikan bahwa kedua kategori memiliki hubungan kuat, sedangkan semakin mendekati -1 berarti kedua kategori memiliki hubungan kuat namun dalam arah yang berkebalikan (Semakin kecil nilainya semakin besar korelasinya). Berikut adalah korelasi matrix pada masing-masing fitur.
 
 ![corrmatrix](https://user-images.githubusercontent.com/60245989/201571258-694fd718-65a1-4057-b7e1-5b3b187552cc.png)
 
-Gambar 6. Matrix Korelasi Fitur
+Gambar 6. Metrik Korelasi Fitur
 
 Dari gambar diatas dapat dilihat bahwa `satisfication level` merupakan kategorik yang paling berpengaruh terhadap perginya karyawan (`left`) disusul dengan `Work_accident` dan juga `time_spend_company`
 
+***
+## _Data Preparation_
 
-## Data Preparation
-
-Pada tahap ini akan preprocess terhadap data yang akan dimasukkan ke dalam model _Machine Learning_ ada beberapa tahapan yang dilakukan, yaitu:
-1. Melakukan encoding pada fitur kategorik
+Pada tahap ini akan dilakukan _preprocessing_ terhadap data yang akan dimasukkan ke dalam model _Machine Learning_, ada beberapa tahapan yang dilakukan, yaitu:
+1. Melakukan _encoding_ pada fitur kategorik
 2. Memisahkan dataset untuk training dan juga test (Dataset splitting)
-3. Melakukan scaling/normalisasi terhadap data set
+3. Melakukan _scaling_/normalisasi terhadap dataset
 
-Pada proses Data Preparation saat ini proses reduksi fitur dengan menggunakan PCA tidak dilakukan karena berdasarkan korelasi matrix, tidak ada fitur selain fitur target yang memiliki korelasi yang kuat.
+Pada proses _Data Preparation_ saat ini proses reduksi fitur dengan menggunakan PCA tidak dilakukan karena berdasarkan korelasi metrik, tidak ada fitur selain fitur target yang memiliki korelasi yang kuat.
 
-### Encoding Fitur
+### _Encoding_ Fitur
 
 Mesin tidak mampu memproses data berupa string secara langsung, sehingga data string atau fitur kategorik perlu dilakukan proses yang disebut `encoding`. Pada projek kali ini encoding berjenis `One Hot Encoding` akan digunakan. Dimana dari fitur yang ada, masing-masing memiliki representasinya sendiri. Contohnya Jika terdapat fitur gender: male dan female, maka hasil One Hot Encodingnya adalah sebagai berikut:
 
@@ -265,17 +267,17 @@ Tabel 5. Data Encoded
 |  3 |                 0.72 |              0.87 |                5 |                    223 |                    5 |               0 |      1 |                       0 | sales        | low      |
 |  4 |                 0.37 |              0.52 |                2 |                    159 |                    3 |               0 |      1 |                       0 | sales        | low      |
 
-### Dataset Splitting
+### Dataset _Splitting_
 
-Untuk setiap proyek _Machine Learning_ perlu dilakukannya proses pemisahan antara data untuk `Training` dan juga untuk `Test` agar tidak terjadi _Overfit_ ataupun _data leakage_ ketika model _Machine Learning_ selesai dibuat. Lebih lanjut fitur _Cross Validation_ juga perlu dilakukan agar datanya lebih konsisten, _Cross Validation_ akan digunakan ketika melakukan Hyperparameter tunning dengan menggunakan `GridSearchCV`.
+Untuk setiap proyek _Machine Learning_ perlu dilakukannya proses pemisahan antara data untuk `Training` dan juga untuk `Test` agar tidak terjadi _Overfit_ ataupun _data leakage_ ketika model _Machine Learning_ selesai dibuat. Lebih lanjut fitur _Cross Validation_ juga perlu dilakukan agar datanya lebih konsisten, _Cross Validation_ akan digunakan ketika melakukan _Hyperparameter tunning_ dengan menggunakan `GridSearchCV`.
 
-Dataset ini cukup banyak, totalnya berjumlah 14999 dataset, sehingga pembagian dataset dengan porsi 80% training : 20% testing, sudahlah cukup. Dengan menggunakan Library Scikit-learn proses train test split dapat dengan mudah dilakukan. Random_state yang digunakan adalah *42*. Sehingga Jumlahnya menjadi:
+Jumlah dataset ini cukup banyak, totalnya berjumlah 14999 dataset, sehingga pembagian dataset dengan porsi 80% training : 20% testing, sudahlah cukup. Dengan menggunakan Library Scikit-learn proses train test split dapat dengan mudah dilakukan. Random_state yang digunakan adalah _42_. Sehingga Jumlahnya menjadi:
 - Data train: 11999
 - Data test: 3000
 
 ### Scaling dan Normalisasi
 
-Dalam pemprosesan data pada _Machine Learning_ melakukan normalisasi terhadap data sangatlah penting, agar tidak terjadi ketidak seimbangan terhadap _weight_/bobot pada data dengan nilai yang tinggi dibandingkan nilai yang rendah. Terdapat beberapa jenis teknik normalisasi/scaling yang sering digunakan. MinMax scaler dan Standard Scaler adalah dua teknik normalisasi yang paling populer.
+Dalam pemprosesan data pada _Machine Learning_ melakukan normalisasi terhadap data sangatlah penting, agar tidak terjadi ketidak seimbangan terhadap _weight_/bobot pada data dengan nilai yang tinggi dibandingkan nilai yang rendah. Terdapat beberapa jenis teknik normalisasi/_scaling_ yang sering digunakan. MinMax scaler dan Standard Scaler adalah dua teknik normalisasi yang paling populer.
 
 MinMax Scaler bekerja dengan melakukan normalisasi data menjadi pada rentang tertentu (umumnya 0 hingga 1, atau -1 hingga 1). Sedangkan Standard scaler melakukan proses standarisasi fitur dengan menghilangkan mean dan membuat standard deviasinya data menjadi 1.
 
@@ -305,7 +307,7 @@ Tabel 6. Normalisasi Data
 |  8335 |           -0.0886901 |         -1.20536  |        -1.46027  |              -1.50134  |            -0.343595 |
 |  2724 |            0.273349  |         -1.38064  |         0.162568 |               1.00167  |             0.342509 |
 
-
+***
 ## Modeling
 
 Pada projek ini terdapat 3 macam algoritma _Machine Learning_ yang digunakan yaitu:
@@ -319,30 +321,30 @@ Semua model dilatih dengan menggunakan parameter dasar. Selanjutnya akan dilakuk
 
 KNN adalah salah satu algoritma _Machine Learning_ bertipe _supervised_ dimana dibutuhkannya suatu label. KNN bekerja dengan cara mengidentifikasikan jarak antara 'tetangga', dimana `K` pada KNN adalah jumlah tetangga yang akan dilihat. Tahapan cara kerja KNN adalah sebagai berikut:
 
-1. Menentukan banyaknya jumlah tetangga yang akan dipakai (K)
+1. Menentukan banyaknya jumlah tetangga yang akan dipakai (K).
 2. Menghitung jarak antara dokumen testing dan training dengan menggunakan metode distance (umumnya Euclidean atau Manhatan).
 3. Mengurutkan data berdasarkan jarak terkecil.
 4. Menentukan kelompok testing berdasarkan jumlah tetangga (K) yang telah dipilih.
 
 __Keuntungan__
 
-1. Algortima KNN sederhana dan mudah diimplementasikan
+1. Algortima KNN sederhana dan mudah diimplementasikan.
 2. Algoritma multifungsi dapat digunakan untuk kasus klasifikasi, regresi, dan pencarian.
 3. Tidak ada periode training, sehingga data baru lebih mudah ditambahkan.
 
 __Kekurangan__
 
-1. Tidak berjalan secara baik pada dataset yang besar. Perlu dilakukannya perhitungan jarak meningkatkan beban komputasi mesin.
+1. Tidak berjalan secara baik pada dataset yang besar. Perlu dilakukannya perhitungan jarak dapat meningkatkan beban komputasi mesin.
 2. Tidak berjalan baik pada data berdimensi tinggi. Karena KNN berdasarkan perhitungan jarak, akan lebih sulit melakukannya pada dimensi tinggi.
-3. Membutuhkan scaling fitur. Perhitungan jarak dengan data acuan yang berbeda-beda akan membuat hasilnya tidak akurat, sehingga perlu dilakukannya scaling/normalisasi data.
+3. Membutuhkan _scaling_ fitur. Perhitungan jarak dengan data acuan yang berbeda-beda akan membuat hasilnya tidak akurat, sehingga perlu dilakukannya _scaling_/normalisasi data.
 
-Pada projek ini, pertama-tama KNN akan menggunakan __n_neighbors=10__ tetangga terdekat. Dan setelahnya akan dilakukan proses _tunning_ secara manual untuk mencari nilai K terbaik dari 1-20 tetangga hingga mendapatkan akurasi testing yang paling tinggi. Perhitungan jarak antar tetangga yang dipakai adalah Eculidean distance.
+Pada proyek ini, pertama-tama KNN akan menggunakan __n_neighbors=10__ tetangga terdekat. Dan setelahnya akan dilakukan proses _tunning_ secara manual untuk mencari nilai K terbaik dari 1-20 tetangga hingga mendapatkan akurasi testing yang paling tinggi. Perhitungan jarak antar tetangga yang dipakai adalah Euclidean distance.
 
 ### Support Vector Machine (SVM)
 
 Sama dengan KNN, SVM merupakan metode _supervised learning_. Dimana terdapat dua tipe SVM yang umum digunakan yaitu _Support Vector Classificatioin (SVC)_ dan juga _Support Vector Regression (SVR)_. SVM juga dapat mengatasi masalah klasifikasi dan regresi baik secara _linear_ ataupun _non-linear_
 
-Cara kerja SVM adalah dengan menemukan _hyperplace_ (jalan raya) terbaik dengan memaksimalkan jarak antar kelas sehingga dapat memisahkan titik-titik  pada input. SVM dulunya dikenal sebagai maximum margin classifier. Ternyata alternatif untuk memperoleh maximum margin adalah dengan mencari support vector . Itulah mengapa nama algoritma ini juga disebut sebagai Support Vector Machine, yakni mesin pencari support vector.Gambar berikut menunjukan ilustrasi pada SVM.
+Cara kerja SVM adalah dengan menemukan _hyperplace_ (jalan raya) terbaik dengan memaksimalkan jarak antar kelas sehingga dapat memisahkan titik-titik pada input. SVM dulunya dikenal sebagai _maximum margin classifier_. Ternyata alternatif untuk memperoleh _maximum margin_ adalah dengan mencari _support vector_ . Itulah mengapa nama algoritma ini juga disebut sebagai Support Vector Machine, yakni mesin pencari _support vector_.Gambar berikut menunjukan ilustrasi pada SVM.
 
 ![SVM](https://user-images.githubusercontent.com/60245989/201678523-204899d3-af83-4e12-991f-b20719c80124.png)
 
@@ -366,10 +368,10 @@ __Keuntungan__
 __Kekurangan__
 
 1. SVM tidak cocok untuk dataset yang besar.
-2. SVM tidak bekerja secara baik ketika dataset terdapat banyak _noise_ contohnya pada target kelas yang overlap
+2. SVM tidak bekerja secara baik ketika dataset terdapat banyak _noise_ contohnya pada target kelas yang overlap.
 3. SVM Membutuhkan waktu training yang relatif lebih lama.
 
-Pada projek ini, pertama-tama SVM akan menggunakan nilai default dimana nilai C=1. Dan setelahnya akan dilakukan proses _tunning_ secara manual untuk mencari nilai C terbaik dari 1-1000 dengan skala pengali 10 hingga mendapatkan akurasi testing yang paling tinggi. Kernel yang digunakan bernilai default.
+Pada proyek ini, pertama-tama SVM akan menggunakan nilai default dimana nilai C=1. Dan setelahnya akan dilakukan proses _tunning_ secara manual untuk mencari nilai C terbaik dari 1-1000 dengan skala pengali 10 hingga mendapatkan akurasi testing yang paling tinggi. Kernel yang digunakan bernilai default.
 
 ### Random Forest
 
@@ -390,8 +392,8 @@ __Kelebihan__
 
 1. Random Forest berbasis _bagging_ dan menggunakan _ensemble learning_ dimana dapat mengurangi masalah _overfitting_ pada _decision tree_ dan juga mengurangi _variance_ sehingga dapat meningkatkan akurasai.
 2. Random Forest dapat menangani _missing value_.
-3. Random Forest tidak membutuhkan fitur scaling.
-4. Random Forest robust terhadap outliers.
+3. Random Forest tidak membutuhkan fitur _scaling_.
+4. Random Forest robust terhadap _outliers_.
 5. Random Forest memiliki efek yang rendah terhadap _noise_ dan relatif stabil.
 
 __Kekurangan__
@@ -417,27 +419,27 @@ GridSearch akan secara otomatis menentukan model dengan hyperparameter terbaik s
 
 ## Evaluation
 
-Pada projek ini permasalahan berjenis klasifikasi sehinga metrik evaluasinya adalah akurasi, precision, recall, dan F1 score. Metrik ini biasa dikenal dengan sebutan __Confusion Matrix__ Secara matematis metrik evaluasi. Confusion Matrix pada _binary classification_ (Yes/No) adalah sebagai berikut
+Pada proyek ini permasalahan berjenis klasifikasi, sehinga metrik evaluasinya adalah precision, recall, dan F1 score. Metrik ini biasa dikenal dengan sebutan __Confusion Matrix__ Secara matematis metrik evaluasi _Confusion Matrix_ pada _binary classification_ (Yes/No) adalah sebagai berikut
 
 ![1_M0Ex70vbOhV9eHKAdk7Ekg](https://user-images.githubusercontent.com/60245989/201802447-b60b9c0c-1fee-4944-9f45-340867d77b3d.png)
 
-Gambar 9. Confusion Matrix (res. stevkarta)[https://stevkarta.medium.com/membicarakan-precision-recall-dan-f1-score-e96d81910354]
+Gambar 9. _Confusion Matrix_ [res. stevkarta](https://stevkarta.medium.com/membicarakan-precision-recall-dan-f1-score-e96d81910354)
 
-0 untuk label negatid dan 1 untuk label positif. Istilah-istilah pada _confusion matrix_:
-- True Negative (TN): Model memprediksi hasil __Negatif__ dan data sebenarnya adalah __Negatif__
-- True Positive (TP): Model memprediksi hasil __Positif__ dan data sebenarnya adalah __Positif__
-- False Negative (FN): Model memprediksi hasil __Negatif__, namun data sebenarnya adalah __Positif__
-- False Positive (FP): Model memprediksi hasil __Positif__, namun data sebenarnya adalah __Negatif__
+0 untuk label negatif dan 1 untuk label positif. Istilah-istilah pada _confusion matrix_:
+- True Negative (TN): Model memprediksi hasil __Negatif__ dan data sebenarnya adalah __Negatif__.
+- True Positive (TP): Model memprediksi hasil __Positif__ dan data sebenarnya adalah __Positif__.
+- False Negative (FN): Model memprediksi hasil __Negatif__, namun data sebenarnya adalah __Positif__.
+- False Positive (FP): Model memprediksi hasil __Positif__, namun data sebenarnya adalah __Negatif__.
 
-Mendapatkan nilai TN dan TP terbanyak adalah tujuan dari model. Namun, dalam kenyataanya prediksi FN atau FP seringlah terjadi. Pada beberapa kasus, model akan lebih toleran pada FN dan dikasus lain akan lebih toleran pada FP. Contohnya pada model prediksi pasin kanker, FP lebih toleran dari pada FN, karena lebih baik pasien terprediksi terkena kanker (meskipun aslinya tidak) dibandingkan pasien diprediksi __tidak__ terkena kanker dan ternyata aslinya pasien mengidap kanker (False Negative).
+Mendapatkan nilai TN dan TP terbanyak adalah tujuan dari model. Namun, dalam kenyataanya prediksi FN atau FP seringlah terjadi. Pada beberapa kasus, kita dituntut untuk mendapatkan model yang akan lebih toleran pada FN dan dikasus lain akan lebih toleran pada FP. Contohnya pada model prediksi pasin kanker, FP lebih toleran dari pada FN, karena lebih baik pasien terprediksi terkena kanker (meskipun aslinya tidak) dibandingkan pasien diprediksi __tidak__ terkena kanker dan ternyata aslinya pasien mengidap kanker (False Negative).
 
-Pemilihan toleransi antara FP dan FN akan bergantung pada pemilihan tipe error, apa lebih diutamakan __Precision__ atau __Recall__
+Pemilihan toleransi antara FP dan FN akan bergantung pada pemilihan tipe error, lebih diutamakan __Precision__ atau __Recall__.
 
-- Precision, secara definisi adalah perbandingan antara True Positive (TP) dengan banyaknya data yang diprediksi positif. Atau secara matematis
+Precision, secara definisi adalah perbandingan antara True Positive (TP) dengan banyaknya data yang diprediksi positif. Atau secara matematis
 
 ![0_fD_fCLwvjNnp2Nel](https://user-images.githubusercontent.com/60245989/201803735-3a27c74f-0b5b-4daf-8811-4784fa448560.gif)
 
-- Recall, secara definisi adalah perbandingan antara True Positive (TP) dengan banyaknya data yang sebenarnya positif. Atau secara matematis
+Recall, secara definisi adalah perbandingan antara True Positive (TP) dengan banyaknya data yang sebenarnya positif. Atau secara matematis
 
 ![0_jnTAutFpHEVqqBHJ](https://user-images.githubusercontent.com/60245989/201803902-798b61bf-92c8-47d3-952a-435880a92ab2.gif)
 
@@ -476,7 +478,7 @@ __Random Forest dengan GridSearch__
 Gambar 13. Confusion Matrix Random Forest dengan GridSearch
 
 
-Terlihat bahwa model Random Forest dengan _Hyperparameter_ yang telah ditunning dengan menggunakan GridSearch memiliki nilai f1-score yang paling tinggi. Sehingga model inilah yang akan digunakan dalam projek ini.
+Terlihat bahwa model Random Forest dengan _Hyperparameter_ yang telah ditunning dengan menggunakan GridSearch memiliki nilai F1-Score yang paling tinggi. Sehingga model inilah yang akan digunakan dalam proyek ini.
 
 Selanjutnya prediksi dengan menggunakan Real Data digunakan pada 10 data acak. Hasilnya adalah sebagai berikut
 
@@ -495,26 +497,27 @@ Tabel 7. Prediksi Real Data
 | 13541 |        0 |     0 |     0 |              0 |            0 |
 | 11167 |        0 |     0 |     0 |              0 |            0 |
 
-Random Forest basic memiliki kekeliruan dalam memprediksi nilai 1 (True), ini selaras dengan hasil pada confusion matrix, dimana f1-scorenya hanya sebesar 0.81
+Random Forest basic memiliki kekeliruan dalam memprediksi nilai 1 (True), ini selaras dengan hasil pada confusion matrix, dimana F1-Scorenya hanya sebesar 0.81
 
 ### Feature Importance
 
-Tujuan akhir dari projek ini bukanlan menemukan model dengan tingkat akurasi terbaik.Tapi mengetahui fitur apa yang paling berpengaruh terhadap perginya seorang karyawan dari suatu perusahaan. Setelah menentukan model terbaik yaitu Random Forest dengan GridSearch, hal selanjutnya adalah mengetahui fitur yang paling penting untuk direkomendasikan kepada bagian HR. Random Forest sudha memiliki data fitur pada bagian `feature_importances_` kita dapat langsung memanggilnya. Hasilnya adalah sebagai berikut
+Tujuan akhir dari proyek ini bukan hanya menemukan model dengan tingkat akurasi terbaik.Tapi mengetahui fitur apa yang paling berpengaruh terhadap perginya seorang karyawan dari suatu perusahaan. Setelah menentukan model terbaik yaitu Random Forest dengan GridSearch, hal selanjutnya adalah mengetahui fitur yang paling penting untuk direkomendasikan kepada bagian HR. Random Forest sudah memiliki data fitur pada bagian `feature_importances_` kita dapat langsung memanggilnya. Hasilnya adalah sebagai berikut
 
 ![Feature Importance](https://user-images.githubusercontent.com/60245989/201806521-fce71354-d5ef-435a-b971-250defa1169b.png)
 
 Gambar 14. Feature Importance
 
-Dari data diketahui __satisfaction_level__ lah nilai yang sangat mempengaruhi untuk pengunduran diri karyawan dimana hasil ini sesuai dengan EDA pada bagian sebelumnya. Sehingga HR perlu  menjaga kepuasaan setiap karyawannya. Selain itu banyaknya projek yang diterima, dan jumlah jam kerja setiap bulannya juga mempengaruhi perginya seorang karyawan dari suatu perusahaan.
+Dari data diketahui __satisfaction_level__ lah nilai yang sangat mempengaruhi untuk pengunduran diri karyawan dimana hasil ini sesuai dengan EDA pada bagian sebelumnya. Sehingga HR perlu  menjaga kepuasaan setiap karyawannya. Selain itu banyaknya projek yang diterima, dan jumlah jam kerja setiap bulannya, waktu yang dihabiskan di perusahaan, dan evaluasi terakhir juga mempengaruhi perginya seorang karyawan dari suatu perusahaan.
 
+***
 ## Kesimpulan
 
-Dari data HR Analytics didapatkan model terbaik adalah Random Forest dengan melakukan _tunning_ parameter menggunakan GridSearch dengan nilai F1-Score pada True sebesar 0.98. Selain itu juga Random Forest dapat mengetahui Feature Importance untuk mengetahui fitur paling penting yang mempengaruhi prediksi. Dari Proses ini diketahui bahwa `satisfication_level` atau kepuasaan seorang karyawan terhadap suatu perusahaan adalah faktor terbesar yang menentukan seorang karyawan dapat pergi atau tetap tingal di suatu perusahaan. Selanjutnya data-data ini dapat digunakan HR sebagai acuan untuk menjaga kestabilan perusahaan.
+Dari data HR Analytics didapatkan model terbaik adalah Random Forest dengan melakukan _tunning_ parameter menggunakan GridSearch dengan nilai F1-Score pada True sebesar 0.98. Selain itu juga Random Forest dapat mengetahui _Feature Importance_ untuk mengetahui fitur paling penting yang mempengaruhi prediksi. Dari Proses ini diketahui bahwa `satisfication_level` atau kepuasaan seorang karyawan terhadap suatu perusahaan adalah faktor terbesar yang menentukan seorang karyawan dapat pergi atau tetap tingal di suatu perusahaan. Selanjutnya data-data ini dapat digunakan HR sebagai acuan untuk menjaga kestabilan perusahaan.
 
 
 ## Referensi
 
-[1] [Work Institue. Retention Report 2019. Report. 2019.] (https://info.workinstitute.com/hubfs/2019%20Retention%20Report/Work%20Institute%202019%20Retention%20Report%20final-1.pdf)
+[1] [Work Institue. Retention Report 2019. Report. 2019.](https://info.workinstitute.com/hubfs/2019%20Retention%20Report/Work%20Institute%202019%20Retention%20Report%20final-1.pdf)
 
 [2] [Al-suraihi, Walid Abdullah; et.al. Employee Turnover: Causes, Importance and Retention Strategies. European Journal of Business Management and Research, Vol. 6, Issue 3, June 2021.](https://www.researchgate.net/publication/352390912_Employee_Turnover_Causes_Importance_and_Retention_Strategies)
 
