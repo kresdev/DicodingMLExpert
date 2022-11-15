@@ -416,19 +416,106 @@ Pada projek kali ini parameter yang digunakan pada Random Forest adalah sebagai 
 GridSearch akan secara otomatis menentukan model dengan hyperparameter terbaik setelah juga melakukan _cross validation_.
 
 ## Evaluation
-Pada bagian ini anda perlu menyebutkan metrik evaluasi yang digunakan. Lalu anda perlu menjelaskan hasil proyek berdasarkan metrik evaluasi yang digunakan.
 
-Sebagai contoh, Anda memiih kasus klasifikasi dan menggunakan metrik **akurasi, precision, recall, dan F1 score**. Jelaskan mengenai beberapa hal berikut:
-- Penjelasan mengenai metrik yang digunakan
-- Menjelaskan hasil proyek berdasarkan metrik evaluasi
+Pada projek ini permasalahan berjenis klasifikasi sehinga metrik evaluasinya adalah akurasi, precision, recall, dan F1 score. Metrik ini biasa dikenal dengan sebutan __Confusion Matrix__ Secara matematis metrik evaluasi. Confusion Matrix pada _binary classification_ (Yes/No) adalah sebagai berikut
 
-Ingatlah, metrik evaluasi yang digunakan harus sesuai dengan konteks data, problem statement, dan solusi yang diinginkan.
+![1_M0Ex70vbOhV9eHKAdk7Ekg](https://user-images.githubusercontent.com/60245989/201802447-b60b9c0c-1fee-4944-9f45-340867d77b3d.png)
 
-**Rubrik/Kriteria Tambahan (Opsional)**: 
-- Menjelaskan formula metrik dan bagaimana metrik tersebut bekerja.
+Gambar 9. Confusion Matrix (res. stevkarta)[https://stevkarta.medium.com/membicarakan-precision-recall-dan-f1-score-e96d81910354]
 
-**---Ini adalah bagian akhir laporan---**
+0 untuk label negatid dan 1 untuk label positif. Istilah-istilah pada _confusion matrix_:
+- True Negative (TN): Model memprediksi hasil __Negatif__ dan data sebenarnya adalah __Negatif__
+- True Positive (TP): Model memprediksi hasil __Positif__ dan data sebenarnya adalah __Positif__
+- False Negative (FN): Model memprediksi hasil __Negatif__, namun data sebenarnya adalah __Positif__
+- False Positive (FP): Model memprediksi hasil __Positif__, namun data sebenarnya adalah __Negatif__
 
-_Catatan:_
-- _Anda dapat menambahkan gambar, kode, atau tabel ke dalam laporan jika diperlukan. Temukan caranya pada contoh dokumen markdown di situs editor [Dillinger](https://dillinger.io/), [Github Guides: Mastering markdown](https://guides.github.com/features/mastering-markdown/), atau sumber lain di internet. Semangat!_
-- Jika terdapat penjelasan yang harus menyertakan code snippet, tuliskan dengan sewajarnya. Tidak perlu menuliskan keseluruhan kode project, cukup bagian yang ingin dijelaskan saja.
+Mendapatkan nilai TN dan TP terbanyak adalah tujuan dari model. Namun, dalam kenyataanya prediksi FN atau FP seringlah terjadi. Pada beberapa kasus, model akan lebih toleran pada FN dan dikasus lain akan lebih toleran pada FP. Contohnya pada model prediksi pasin kanker, FP lebih toleran dari pada FN, karena lebih baik pasien terprediksi terkena kanker (meskipun aslinya tidak) dibandingkan pasien diprediksi __tidak__ terkena kanker dan ternyata aslinya pasien mengidap kanker (False Negative).
+
+Pemilihan toleransi antara FP dan FN akan bergantung pada pemilihan tipe error, apa lebih diutamakan __Precision__ atau __Recall__
+
+- Precision, secara definisi adalah perbandingan antara True Positive (TP) dengan banyaknya data yang diprediksi positif. Atau secara matematis
+
+![0_fD_fCLwvjNnp2Nel](https://user-images.githubusercontent.com/60245989/201803735-3a27c74f-0b5b-4daf-8811-4784fa448560.gif)
+
+- Recall, secara definisi adalah perbandingan antara True Positive (TP) dengan banyaknya data yang sebenarnya positif. Atau secara matematis
+
+![0_jnTAutFpHEVqqBHJ](https://user-images.githubusercontent.com/60245989/201803902-798b61bf-92c8-47d3-952a-435880a92ab2.gif)
+
+Jika dilihat dari dua persamaan di atas maka terlihta pada _precision_ semakin kecil nilai False Positive maka nilainya _precision_ akan semakin besar. Begitu juga pada _recall_. Pada contoh kasus di kanker di atas, FN yang kecil lebih baik ketimbang FP sehingga acuan _recall_ bisalah digunakan.
+
+Namun terkadang terdapat dilema dalam memilih _precision_ dan juga _recall_, dan kita perlu score yang sama-sama tinggi. Untuk mendapatkan hasil yang seimbang terdapat metode lain yaitu __F1-Score__ yang secara definisi adalah harmonic mean dari _precision_ dan _recall_. Secara matematis ditulis sebagia berikut
+
+![0_RdOj9EZ6TbVmwWmi](https://user-images.githubusercontent.com/60245989/201804716-a4ab55fb-73ad-4029-95b2-b8a223681043.gif)
+
+Terlebih F1-Score cocok untuk data klasifikasi yang tidak seimbang (_imbalance dataset_). Sehingga F1-Score akan dijadikan acuan pada projek kali ini.
+
+Berikut adalah hasil _Consufion Matrix_ pada setiap model
+
+__KNN__
+
+![KNN_F1](https://user-images.githubusercontent.com/60245989/201805289-18da32a9-4ce7-4017-96f0-073c044d2f09.PNG)
+
+Gambar 10. Confusion Matrix KNN
+
+__SVM__
+
+![SVM_F1](https://user-images.githubusercontent.com/60245989/201805347-c83d6939-7a63-43d6-9902-e6c28593e14e.PNG)
+
+Gambar 11. Confusion Matrix SVM
+
+__Random Forest__
+
+![RF_F1](https://user-images.githubusercontent.com/60245989/201805392-d2f41cbe-76c1-4f95-be59-dfb49459072a.PNG)
+
+Gambar 12. Confusion Matrix Random Forest
+
+__Random Forest dengan GridSearch__
+
+![GSV_F1](https://user-images.githubusercontent.com/60245989/201805430-b437f2b6-fb67-4842-a054-f78a7505f301.PNG)
+
+Gambar 13. Confusion Matrix Random Forest dengan GridSearch
+
+
+Terlihat bahwa model Random Forest dengan _Hyperparameter_ yang telah ditunning dengan menggunakan GridSearch memiliki nilai f1-score yang paling tinggi. Sehingga model inilah yang akan digunakan dalam projek ini.
+
+Selanjutnya prediksi dengan menggunakan Real Data digunakan pada 10 data acak. Hasilnya adalah sebagai berikut
+
+Tabel 7. Prediksi Real Data
+
+|       |   y_true |   KNN |   SVM |   RandomForest |   GridSearch |
+|------:|---------:|------:|------:|---------------:|-------------:|
+|  4278 |        0 |     0 |     0 |              0 |            0 |
+|   244 |        1 |     1 |     1 |              0 |            1 |
+| 10646 |        0 |     0 |     0 |              0 |            0 |
+|  1818 |        1 |     1 |     1 |              0 |            1 |
+|  2950 |        0 |     0 |     0 |              0 |            0 |
+|  9241 |        0 |     0 |     0 |              0 |            0 |
+|  1153 |        1 |     1 |     1 |              1 |            1 |
+|  7535 |        0 |     0 |     0 |              0 |            0 |
+| 13541 |        0 |     0 |     0 |              0 |            0 |
+| 11167 |        0 |     0 |     0 |              0 |            0 |
+
+Random Forest basic memiliki kekeliruan dalam memprediksi nilai 1 (True), ini selaras dengan hasil pada confusion matrix, dimana f1-scorenya hanya sebesar 0.81
+
+### Feature Importance
+
+Tujuan akhir dari projek ini bukanlan menemukan model dengan tingkat akurasi terbaik.Tapi mengetahui fitur apa yang paling berpengaruh terhadap perginya seorang karyawan dari suatu perusahaan. Setelah menentukan model terbaik yaitu Random Forest dengan GridSearch, hal selanjutnya adalah mengetahui fitur yang paling penting untuk direkomendasikan kepada bagian HR. Random Forest sudha memiliki data fitur pada bagian `feature_importances_` kita dapat langsung memanggilnya. Hasilnya adalah sebagai berikut
+
+![Feature Importance](https://user-images.githubusercontent.com/60245989/201806521-fce71354-d5ef-435a-b971-250defa1169b.png)
+
+Gambar 14. Feature Importance
+
+Dari data diketahui __satisfaction_level__ lah nilai yang sangat mempengaruhi untuk pengunduran diri karyawan dimana hasil ini sesuai dengan EDA pada bagian sebelumnya. Sehingga HR perlu  menjaga kepuasaan setiap karyawannya. Selain itu banyaknya projek yang diterima, dan jumlah jam kerja setiap bulannya juga mempengaruhi perginya seorang karyawan dari suatu perusahaan.
+
+## Kesimpulan
+
+Dari data HR Analytics didapatkan model terbaik adalah Random Forest dengan melakukan _tunning_ parameter menggunakan GridSearch dengan nilai F1-Score pada True sebesar 0.98. Selain itu juga Random Forest dapat mengetahui Feature Importance untuk mengetahui fitur paling penting yang mempengaruhi prediksi. Dari Proses ini diketahui bahwa `satisfication_level` atau kepuasaan seorang karyawan terhadap suatu perusahaan adalah faktor terbesar yang menentukan seorang karyawan dapat pergi atau tetap tingal di suatu perusahaan. Selanjutnya data-data ini dapat digunakan HR sebagai acuan untuk menjaga kestabilan perusahaan.
+
+
+## Referensi
+
+[1] [Work Institue. Retention Report 2019. Report. 2019.] (https://info.workinstitute.com/hubfs/2019%20Retention%20Report/Work%20Institute%202019%20Retention%20Report%20final-1.pdf)
+
+[2] [Al-suraihi, Walid Abdullah; et.al. Employee Turnover: Causes, Importance and Retention Strategies. European Journal of Business Management and Research, Vol. 6, Issue 3, June 2021.](https://www.researchgate.net/publication/352390912_Employee_Turnover_Causes_Importance_and_Retention_Strategies)
+
+[3] [Basariya, s. Rabiyathul; Ahmed, Ramyar Rzgar. A STUDY ON ATTRITION – TURNOVER INTENTIONS OF EMPLOYEES. International Journal of Civil Engineering and Technology, Volume 10, Issue 01, January 2019, pp. 2594–2601.](https://www.researchgate.net/publication/333104347_A_STUDY_ON_ATTRITION_-_TURNOVER_INTENTIONS_OF_EMPLOYEES)
