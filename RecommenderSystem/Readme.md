@@ -9,7 +9,7 @@ Pada pekermbangan jaman saat ini, dimana dunia entertainment berkembang dengan s
 
 Penelitian telah menunjukan rekomendasi film (_movie recommendation_) merupakan faktor penting dalam sebuah aplikasi streaming berbayar. Berbagai peneliti mencoba menemukan teknik-teknik yang efektif untuk melakukan rekomendasi film, seperti yang dilakukan oleh Halder, et.al dengan melakukan _Movie Recommendation System Based on Movie Swarm_ [1](https://ieeexplore.ieee.org/document/6382910), ataupun yang berbasis Content Based Filtering seperti yang dilakukan oleh Reddy, et.al [2](https://www.researchgate.net/publication/331966843_Content-Based_Movie_Recommendation_System_Using_Genre_Correlation) ataupun yang berbasis Collaborative Filtering yang dilakukan oleh Schafer, et.al [3](https://www.researchgate.net/publication/200121027_Collaborative_Filtering_Recommender_Systems). Berbagai teknik ini memiliki tujuan utama yang pada akhirnya adalah dapat meningkatan nilai bisnis dari suatu layanan berbayar.
 
-Permasalahan ini merupakan salah satu hal terberat bagi suatu perusahaan layanan streaming berbayar agar dapat memberikan rekomendasi film terbaik kepada penggunanya. Semakin relevan rekomendasi yang diberikan, penggunaan aplikasi akan semakin meningkat sehingga dapat meningkatnya juga jumlah pengguna secara jangka panjang. Dengan menggunakan _Machine Learning_ masalah ini dapat dengan lebih baik diselesaikan. Teknik-teknik dengan berbasis Content ataupun dengan menggunakan Collaborative Filtering dapat digunakan sehingga pengguna baru ataupun pengguna yang bahkan belum pernah menyaksikan film tersebut bisa mendapatkan rekomendasi yang relevan sesuai _behaviour_nya.
+Permasalahan ini merupakan salah satu hal terberat bagi suatu perusahaan layanan streaming berbayar agar dapat memberikan rekomendasi film terbaik kepada penggunanya. Semakin relevan rekomendasi yang diberikan, penggunaan aplikasi akan semakin meningkat sehingga dapat meningkatnya juga jumlah pengguna secara jangka panjang. Dengan menggunakan _Machine Learning_ masalah ini dapat dengan lebih baik diselesaikan. Teknik-teknik dengan berbasis Content ataupun dengan menggunakan Collaborative Filtering dapat digunakan sehingga pengguna baru ataupun pengguna yang bahkan belum pernah menyaksikan film tersebut bisa mendapatkan rekomendasi yang relevan sesuai _behaviour_.
 
 ***
 ## Business Understanding
@@ -47,70 +47,123 @@ Tabel 1. Rangkuman Dataset HR Analytics
 
 Jenis | Keterangan 
 --- | ---
-Sumber | [Kaggle Dataset - HR Analytics](https://www.kaggle.com/datasets/giripujar/hr-analytics)
-Lisensi | [CC0: Public Domain](https://creativecommons.org/publicdomain/zero/1.0/)
-Author | Giri Pujar
-Size | 567 kB
+Sumber | [Kaggle Dataset - Movie Lens Small Latest Datasets](https://www.kaggle.com/datasets/shubhammehta21/movie-lens-small-latest-dataset)
+Author | SHUBHAM MEHTA
+Size | 3.3 MB
 
-Data dengan nama `HR_comma_sep.csv` berisikan 14999 baris dan 10 kolom. Dimana 10 kolom tersebut menjelaskan bebearap fitur yaitu:
-- satisfaction_level: Angka kepuasan yang diberikan karyawan (0-1)
-- last_evaluation: Angka penilaian dari manager (0-1)
-- number_project: Jumlah projek yang pernah dikerjakan karyawan
-- average_monthly_hours: Total jam kerja per bulan
-- time_spend_company: Total masa kerja dalam tahun
-- work_accident: Dummy variable terjadinya kecelakaan: Ya (1), Tidak (0)
-- left: Dummy variable: Keluar (1), Tetap (0)
-- promoted_last_5years: Dummy variable, Dipromosikan (1), Tidak dipromosikan(0)
-- department: Nama department (sales,technical,support,IT, product,marketing, other)
-- salary: 3-level kategori salary (low, medium, high)
+Data dengan nama `movies.csv` berisikan 9742 baris dan 3 kolom. Dimana 3 kolom tersebut menjelaskan beberapa fitur yaitu:
+- MovieId: Unique id dari film
+- Title: Judul dari film
+- Genres: Tipe genre dari film
+
+Sedangkan data dengan nama `ratings.csv` berisikan 100836 baris dan 4 kolom, dimana fiturnya adalah:
+- UserId: Unique id dari user
+- MovieId: Unique id dari film
+- rating: Penilaian film dari user
+- timestamp: waktu melakukan submit survey
 
 __Persiapan Data dan Exploratory Data Analysis (EDA)__
 1. Melakukan _import_ data dari csv dengan menggunakan Pandas.
 2. Melakukan pengecekan data secara umum, dan juga data yang kosong (null dan NA).
-3. Melakukan pengecekan _Outlier_.
-4. Melakukan _Univariate Analysis_ pada fitur numerik dan kategorik.
-5. Melakukan _Multivariate Analysis_ pada fitur numerik dan kategorik.
-6. Melakukan Korelasi Metrik untuk masing-masing fitur.
+3. Melakukan _Univariate Analysis_ pada jenis genre dan juga jumlah rating.
 
 ### 1. Import data dengan Pandas
 
-Pada proyek ini library pandas digunakan, dimana data yang berjenis CSV diubah kedalam bentuk Pandas Data Frame. 5 data awalnya adalah sebagai berikut
+Pada proyek ini library pandas digunakan, dimana data yang berjenis CSV diubah kedalam bentuk Pandas Data Frame. 5 data awalnya movies dan ratings adalah sebagai berikut
 
-Tabel 2. 5 Data awal Dataset
+Tabel 2. 5 Data awal Movies Dataset
 
-|  Index  |   satisfaction_level |   last_evaluation |   number_project |   average_montly_hours |   time_spend_company |   Work_accident |   left |   promotion_last_5years | Department   | salary   |
-|---:|---------------------:|------------------:|-----------------:|-----------------------:|---------------------:|----------------:|-------:|------------------------:|:-------------|:---------|
-|  0 |                 0.38 |              0.53 |                2 |                    157 |                    3 |               0 |      1 |                       0 | sales        | low      |
-|  1 |                 0.8  |              0.86 |                5 |                    262 |                    6 |               0 |      1 |                       0 | sales        | medium   |
-|  2 |                 0.11 |              0.88 |                7 |                    272 |                    4 |               0 |      1 |                       0 | sales        | medium   |
-|  3 |                 0.72 |              0.87 |                5 |                    223 |                    5 |               0 |      1 |                       0 | sales        | low      |
-|  4 |                 0.37 |              0.52 |                2 |                    159 |                    3 |               0 |      1 |                       0 | sales        | low      |
+|  # |   movieId | title                              | genres                                      |
+|---:|----------:|:-----------------------------------|:--------------------------------------------|
+|  0 |         1 | Toy Story (1995)                   | Adventure|Animation|Children|Comedy|Fantasy |
+|  1 |         2 | Jumanji (1995)                     | Adventure|Children|Fantasy                  |
+|  2 |         3 | Grumpier Old Men (1995)            | Comedy|Romance                              |
+|  3 |         4 | Waiting to Exhale (1995)           | Comedy|Drama|Romance                        |
+|  4 |         5 | Father of the Bride Part II (1995) | Comedy                                      |
 
+Tabel 3. 5 Data awal Ratings Dataset
+
+|  # |   userId |   movieId |   rating |   timestamp |
+|---:|---------:|----------:|---------:|------------:|
+|  0 |        1 |         1 |        4 | 9.64983e+08 |
+|  1 |        1 |         3 |        4 | 9.64981e+08 |
+|  2 |        1 |         6 |        4 | 9.64982e+08 |
+|  3 |        1 |        47 |        5 | 9.64984e+08 |
+|  4 |        1 |        50 |        5 | 9.64983e+08 |
 
 ### 2. Pengencekan Data Secara Umum
 
 dengan menggunakan `df.info()` kita bisa mengetahui jenis-jenis dari data yaitu:
 
-![datatype](https://user-images.githubusercontent.com/60245989/201567069-7a0361f0-62dc-4a44-990e-d6760b551cad.PNG)
+Tabel 4. Dataset Movies Info
 
-Gambar 1. Jenis-jenis Type pada Dataset
+|   # |   Column  |   Non-Null Count    |   Dtype   |
+|----:|----------:|--------------------:|----------:|
+|   0 | MovieId   | 9742 non-null       | int64     |
+|   1 | title     | 9742 non-null       | object    |
+|   2 | genres    | 9742 non-null       | object    |
+
+Tabel 5. Dataset Ratings Info
+
+|   # |   Column  |   Non-Null Count    |   Dtype   |
+|----:|----------:|--------------------:|----------:|
+|   0 | userId    | 100836 non-null     | int64     |
+|   1 | MovieId   | 100836 non-null     | int64     |
+|   2 | rating    | 100836 non-null     | float64   |
+|   3 | timestamp | 100836 non-null     | int64     |
 
 Jika dilihat lebih detail dengan menggunakan `df.nunique()` maka data data tersebut menjadi seperti berikut:
 
-Tabel 3. Unique Value Dataset
+Tabel 6. Unique Value Movies Dataset
 
-| Fitur                 |   Unique Value |
-|:----------------------|----:|
-| satisfaction_level    |  92 |
-| last_evaluation       |  65 |
-| number_project        |   6 |
-| average_montly_hours  | 215 |
-| time_spend_company    |   8 |
-| Work_accident         |   2 |
-| left                  |   2 |
-| promotion_last_5years |   2 |
-| Department            |  10 |
-| salary                |   3 |
+| Column  |Unique|
+|:--------|-----:|
+| movieId | 9742 |
+| title   | 9737 |
+| genres  |  951 |
+
+Tabel 7. Unique Value Ratings Dataset
+
+| Column    | Unique|
+|:----------|------:|
+| userId    |   610 |
+| movieId   |  9724 |
+| rating    |    10 |
+| timestamp | 85043 |
+
+
+Dari Tabel 6 terlihat bahwa terdapat MovieId dengan judul yang sama sebanyak 5 Movie, jika kita lihat lebih detail data-datanya adalah sebagai berikut:
+
+|      |   movieId | title                                  | genres                              |
+|-----:|----------:|:---------------------------------------|:------------------------------------|
+| 5601 |     26958 | Emma (1996)                            | Romance                             |
+| 6932 |     64997 | War of the Worlds (2005)               | Action|Sci-Fi                       |
+| 9106 |    144606 | Confessions of a Dangerous Mind (2002) | Comedy|Crime|Drama|Romance|Thriller |
+| 9135 |    147002 | Eros (2004)                            | Drama|Romance                       |
+| 9468 |    168358 | Saturn 3 (1980)                        | Sci-Fi|Thriller                     |
+
+Nantinya data-data dengan title yang sama namun Id yang berbeda akan didrop (dibuang) sehingga tidak membingungkan mesin. Selanjutnya untuk melakukan pengecekan apakah terdapat data yang kosong dengan menggunakan `isnull` dan juga `isna`:
+
+Total Null movies dataframe: 0
+Total NA movies dataframe: 0
+Total Null ratings dataframe: 0
+Total NA ratings dataframe: 0
+
+Tidak terdapat data yang kosong. Data-data statistik pada dataset ratings adalah sebagai berikut:
+
+|       |     userId |   movieId |       rating |        timestamp |
+|:------|-----------:|----------:|-------------:|-----------------:|
+| count | 100836     |  100836   | 100836       | 100836           |
+| mean  |    326.128 |   19435.3 |      3.50156 |      1.20595e+09 |
+| std   |    182.618 |   35531   |      1.04253 |      2.16261e+08 |
+| min   |      1     |       1   |      0.5     |      8.28125e+08 |
+| 25%   |    177     |    1199   |      3       |      1.01912e+09 |
+| 50%   |    325     |    2991   |      3.5     |      1.18609e+09 |
+| 75%   |    477     |    8122   |      4       |      1.43599e+09 |
+| max   |    610     |  193609   |      5       |      1.5378e+09  |
+
+
+
 
 
 Data-data tersebut memiliki 3 jenis tipe data yang berbeda yaitu float64, int64, dan juga object. Namun secara garis besar data-data tersebut dapat dikelompokkan secara numerik dan kategorik:
