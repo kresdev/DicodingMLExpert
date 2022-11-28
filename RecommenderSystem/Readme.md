@@ -132,17 +132,9 @@ Tabel 7. Unique Value Ratings Dataset
 | timestamp | 85043 |
 
 
-Dari Tabel 6 terlihat bahwa terdapat MovieId dengan judul yang sama sebanyak 5 Movie, jika kita lihat lebih detail data-datanya adalah sebagai berikut:
+Dari Tabel 6 terlihat bahwa terdapat MovieId dengan judul yang sama sebanyak 5 Movie, Nantinya data-data dengan title yang sama namun Id yang berbeda akan didrop (dibuang) sehingga tidak membingungkan mesin. 
 
-|      |   movieId | title                                  | genres                              |
-|-----:|----------:|:---------------------------------------|:------------------------------------|
-| 5601 |     26958 | Emma (1996)                            | Romance                             |
-| 6932 |     64997 | War of the Worlds (2005)               | Action|Sci-Fi                       |
-| 9106 |    144606 | Confessions of a Dangerous Mind (2002) | Comedy|Crime|Drama|Romance|Thriller |
-| 9135 |    147002 | Eros (2004)                            | Drama|Romance                       |
-| 9468 |    168358 | Saturn 3 (1980)                        | Sci-Fi|Thriller                     |
-
-Nantinya data-data dengan title yang sama namun Id yang berbeda akan didrop (dibuang) sehingga tidak membingungkan mesin. Selanjutnya untuk melakukan pengecekan apakah terdapat data yang kosong dengan menggunakan `isnull` dan juga `isna`:
+Selanjutnya untuk melakukan pengecekan apakah terdapat data yang kosong dengan menggunakan `isnull` dan juga `isna`:
 
 Total Null movies dataframe: 0
 Total NA movies dataframe: 0
@@ -150,6 +142,8 @@ Total Null ratings dataframe: 0
 Total NA ratings dataframe: 0
 
 Tidak terdapat data yang kosong. Data-data statistik pada dataset ratings adalah sebagai berikut:
+
+Tabel 8. Statistik Data Movies Dataset
 
 |       |     userId |   movieId |       rating |        timestamp |
 |:------|-----------:|----------:|-------------:|-----------------:|
@@ -162,200 +156,96 @@ Tidak terdapat data yang kosong. Data-data statistik pada dataset ratings adalah
 | 75%   |    477     |    8122   |      4       |      1.43599e+09 |
 | max   |    610     |  193609   |      5       |      1.5378e+09  |
 
+### 3. _Univariate Analysis_
 
+Pada analisa _univariate_ akan dilihat total dari masing-masing genres pada movies dan jumlah mayoritas rating pada dataset ratings.
 
+#### 3.1 _Univariate Analysis_ Fitur Genre
 
+Kolom genres pada dataset movies tidak hanya terdiri dari 1 jenis genres, tapi memiliki banyak genres sekaligus. Maka dari itu, genre-genre akan dihitung secara terpisah, sehingga memungkinkan total genre lebih dari jumlah filmnya (karena 1 film bisa lebih dari 1 genre). Setelah dilakukan filter didapatkan bahwa jumlah genre adalah sebagai berikut
 
-Data-data tersebut memiliki 3 jenis tipe data yang berbeda yaitu float64, int64, dan juga object. Namun secara garis besar data-data tersebut dapat dikelompokkan secara numerik dan kategorik:
-- Numerik: satisfaction_level, last_evaluation, number_project, average_montly_hours, time_spend_company.
-- Kategorik: Work_accident, promoted_last_5_years, left, Department, salary.
+![download](https://user-images.githubusercontent.com/60245989/204174201-a50b8a5b-5bb1-44b1-bc93-3b0ea67d392d.png)
 
-Setelah dilakukan pengecekan dengan menggunakan `df.isnull()` dan juga `df.isna()` _tidak ada data yang kosong_
-
-Secara statistik datanya adalah sebagai berikut:
-
-Tabel 4. Statistik Dataset
-
-|       |   satisfaction_level |   last_evaluation |   number_project |   average_montly_hours |   time_spend_company |   Work_accident |         left |   promotion_last_5years |
-|:------|---------------------:|------------------:|-----------------:|-----------------------:|---------------------:|----------------:|-------------:|------------------------:|
-| count |         14999        |      14999        |      14999       |             14999      |          14999       |    14999        | 14999        |           14999         |
-| mean  |             0.612834 |          0.716102 |          3.80305 |               201.05   |              3.49823 |        0.14461  |     0.238083 |               0.0212681 |
-| std   |             0.248631 |          0.171169 |          1.23259 |                49.9431 |              1.46014 |        0.351719 |     0.425924 |               0.144281  |
-| min   |             0.09     |          0.36     |          2       |                96      |              2       |        0        |     0        |               0         |
-| 25%   |             0.44     |          0.56     |          3       |               156      |              3       |        0        |     0        |               0         |
-| 50%   |             0.64     |          0.72     |          4       |               200      |              3       |        0        |     0        |               0         |
-| 75%   |             0.82     |          0.87     |          5       |               245      |              4       |        0        |     0        |               0         |
-| max   |             1        |          1        |          7       |               310      |             10       |        1        |     1        |               1         |
-
-### 3. Pengecekan _Outlier_
-
-Data numerik pada dataset hanyalah: 
-- satisfaction_level
-- last_evaluation
-- number_project
-- average_montly_hours
-- time_spend_company 
-
-Sehingga hanya data tersebut saja yang akan dilakukan pengecekan. Diagram boxplot digunakan untuk melakukan pengecekan pada _outliers_, gambar berikut menunjukan boxplot untuk setiap kategori numerik.
-
-![Outliers](https://user-images.githubusercontent.com/60245989/201568021-24de7a87-8845-4761-96f7-444f248d1108.png)
-
-Gambar 2. Pengecekan Outliers pada Fitur Numerik
-
-Dari data di atas hanya `time_spend_company` saja yang memiliki ___outliers___ walaupun datanya sedikit, namun data _time_spend_company_ pada perusahaan berpengaruh terhadap keputusan pergi atau tidaknya karyawan dari suatu perusahaan, sehingga data `time_spend_company` __tidak dibuang__.
-
-
-### 4. _Univariate Analysis_
-
-Pada analisa _Univariate_, setiap kategori akan dilihat secara masing-masing.
-
-#### 4.1 _Univerate Analysis_ Fitur Kategorik
-
-Untuk melakukan analisa _Univariate_ pada fitur kategorik, diagram bar digunakan. Gambarnya adalah sebagai berikut:
-
-![Kategorik](https://user-images.githubusercontent.com/60245989/201568739-ed827a81-58df-4289-8693-96f0b4d5a6e2.png)
-
-Gambar 3. _Univariate Analysis_ Fitur Kategorik
+Gambar 1. _Univariate Analysis_ Jumlah Genre pada Film
 
 Dari data-data tersebut dapat diambil analisa bahwa:
-1. Jumlah data karyawan yang tidak mengalami work accident lebih banyak dan tidak seimbang (imbalance).
-2. Karyawan yang meninggalkan perusahaan lebih sedikiT dibanding yang tetap tinggal (imbalance).
-3. Jumlah karyawan yang belum dipromosikan lebih banyak dan tidak seimbang.
-4. Departemen **sales** memiliki karyawan yang paling banyak.
-5. Karyawan dengan kategori gaji paling tinggi memiliki jumlah paling rendah.
+1. Film yang terdapat pada dataset mayoritas memiliki genre __Drama__ dan juga __Comedy__ .
+2. Terdapat film yang tidak memiliki genre (no genres listed). Selanjutnya film-film tanpa genres akan dibuang.
 
-#### 4.2 _Univerate Analysis_ Fitur Numerik
+### 3.2 _Univariate Analysis_ Jumlah Rating
 
-Untuk melakukan analisa Univariate pada fitur numerik, sebuah historgram digunakan dengan melakukan _binning_ sebesar 20. Diagramnya adalah sebagai berikut:
+Pada dataset ratings dilakukan analisa untuk mengetahui jumlah rating mayoritas dan juga minoritas yang diberikan oleh user. Data-datanya adalah sebagai berikut:
 
-![numeriks](https://user-images.githubusercontent.com/60245989/201568918-dfa4f62a-8a39-420b-8be4-adf2894a468b.png)
+![download](https://user-images.githubusercontent.com/60245989/204174661-6bb6f2d9-23ea-4ad8-bdbc-a7bb519398da.png)
 
-Gambar 3. _Univariate Analysis_ Fitur Numerik
+Gambar 2. _Univariate Analysis_ Jumlah Rating
 
 Dari data-data tersebut dapat diambil analisa bahwa:
-
-1. Satisfication level, Last Evaluation, Number Project, danAvarage Montly hours karyawan beragam.
-2. Jumlah karyawan dengan jumlah tahun kerja 3 tahun paling dominan.
-
-### 5. _Multivariate Analysis_
-
-Pada analisa _Multivariate_ 2 kategori ada dibandingkan. Kategori `left` akan menjadi acuan terhadap kategori lainnya.
-
-#### 5.1 _Multivariate Analysis_ Fitur Kategorik
-
-Untuk melakukan analisa _Multivariate_ pada fitur kategorik, diagram bar digunakan. Gambarnya adalah sebagai berikut:
-
-![MultivariateKategorik](https://user-images.githubusercontent.com/60245989/201570153-85f189bd-22e5-4e27-b511-5458bfca2419.png)
-
-Gambar 4. _Multivariate Analysis_ Fitur Kategorik
-
-Dari data-data tersebut dapat dianalisa bahwa:
-
-1. Jumlah data karywan yang pergi dan stay di perusahaan tidak seimbang (imbalance dataset).
-2. Karyawan yang **belum** pernah mengalami work accident lebih banyak meninggalkan perusahaan.
-3. Karyawan yang **belum** dipromosikan dalam 5 tahun terakhir lebih banyak meninggalkan perusahaan.
-4. Departemen **sales** memiliki karyawan yang paling banyak meninggalkan perusahaan.
-5. Karyawan dengan gaji kategori **rendah** paling banyak meninggalkan karyawan.
-
-#### 5.2 _Multivariate Analysis_ Fitur Numerik
-
-Untuk melakukan analisa _Multivariate_ pada fitur numerik, Histogram digunakan. Pada analisa ini hanya dilihat data-data dari setiap fitur dimana bersinggungan juga dengan `left` (Hanya data karyawan yang telah pergi meninggal perusahaan yang ditampilkan). Diagramnya adalah sebagai berikut:
-
-![Multivariatenumeriks](https://user-images.githubusercontent.com/60245989/201570687-089e70c5-1008-4ba7-8160-806b02279000.png)
-
-Gambar 5. _Multivariate Analysis_ Fitur Numerik
-
-Dari data-data tersebut dapat dianalisa bahwa:
-1. Karyawan yang pergi meninggalkan perusahaan adalah karyawan dengan satisfication level rendah (0.1) dan menengah  (0.4).
-2. Karyawan dengan penilain buruk (<0.5) dan penilaian baik (>0.8) sama-sama pergi dari perusahaan.
-3. Karyawan dengan jumlah projek **terendah (2)** pergi meninggalkan perusahaan.
-4. Karyawan dengan jumlah jam paling sedikit setiap bulannya (<160 jam) paling banyak pergi meninggalkan perusahaan.
-5. Karyawan dengan waktu bersama perusahaan **3 tahun** paling banyak meninggalkan perusahaan.
-
-### 6. Korelasi Metrik Fitur
-
-Korelasi antar fitur dapat dilakukan dengan menggunakan fitur `corr()` pada Pandas. Dengan korelasi metrik dapat dilihat hubungan antara dua jenis fitur, dimana nilainya akan berkisar dari -1 hingga +1. Semakin mendekati +1 berartikan bahwa kedua kategori memiliki hubungan kuat, sedangkan semakin mendekati -1 berarti kedua kategori memiliki hubungan kuat namun dalam arah yang berkebalikan (Semakin kecil nilainya semakin besar korelasinya). Berikut adalah korelasi matrix pada masing-masing fitur.
-
-![corrmatrix](https://user-images.githubusercontent.com/60245989/201571258-694fd718-65a1-4057-b7e1-5b3b187552cc.png)
-
-Gambar 6. Metrik Korelasi Fitur
-
-Dari gambar diatas dapat dilihat bahwa `satisfication level` merupakan kategorik yang paling berpengaruh terhadap perginya karyawan (`left`) disusul dengan `Work_accident` dan juga `time_spend_company`.
+1. Rating yang paling banyak diberikan oleh user adalah 4.0.
+2. Rating 0.5 memiliki jumlah rating paling sedikit.
 
 ***
 ## _Data Preparation_
 
 Pada tahap ini akan dilakukan _preprocessing_ terhadap data yang akan dimasukkan ke dalam model _Machine Learning_, ada beberapa tahapan yang dilakukan, yaitu:
-1. Melakukan _encoding_ pada fitur kategorik.
-2. Memisahkan dataset untuk training dan juga test (Dataset splitting).
-3. Melakukan _scaling_/normalisasi terhadap dataset.
+1. Membuang data yang duplikasi (pada movie dataset)
+2. Membuang data yang tidak diperlukan. Pada movie dataset yang tidak memiliki genre, pada rating dataset kolom time stamp.
+3. Menggabungkan movie dataset dengan rating dataset (merge dataset) untuk melakukan _collaborative filtering_.
+4. Melakukan tokenisasi dan membuat bank token untuk _content-based filtering_.
+5. Melakukan dataset split untuk mendapat data training dan testing pada merge dataset untuk _collaborative filtering_.
 
-Pada proses _Data Preparation_ saat ini proses reduksi fitur dengan menggunakan PCA tidak dilakukan karena berdasarkan korelasi metrik, tidak ada fitur selain fitur target yang memiliki korelasi yang kuat.
+### Membuang duplikasi dataset
 
-### _Encoding_ Fitur
+Pada bagian sebelumnya telah dijelaskan bahwa terdapat duplikasi pada movies dataset. Dimana film dengan judul yang sama memiliki movieId yang berbeda. Data-datanya adalah sebagai berikut:
 
-Mesin tidak mampu memproses data berupa string secara langsung, sehingga data string atau fitur kategorik perlu dilakukan proses yang disebut `encoding`. Pada projek kali ini encoding berjenis `One Hot Encoding` akan digunakan. Dimana dari fitur yang ada, masing-masing memiliki representasinya sendiri. Contohnya Jika terdapat fitur gender: male dan female, maka hasil One Hot Encodingnya adalah sebagai berikut:
+Tabel 9. Film Duplikat dengan Judul yang Sama
 
-|Index|Sex_female|Sex_male|
-|:----|:---------|-------:|
-|0    |1         | 0      |
-|1    |0         | 1      |
+|      |   movieId | title                                  | genres                              |
+|-----:|----------:|:---------------------------------------|:------------------------------------|
+| 5601 |     26958 | Emma (1996)                            | Romance                             |
+| 6932 |     64997 | War of the Worlds (2005)               | Action|Sci-Fi                       |
+| 9106 |    144606 | Confessions of a Dangerous Mind (2002) | Comedy|Crime|Drama|Romance|Thriller |
+| 9135 |    147002 | Eros (2004)                            | Drama|Romance                       |
+| 9468 |    168358 | Saturn 3 (1980)                        | Sci-Fi|Thriller                     |
 
-Dari dataset yang ada, hanya terdapat 2 fitur dengan nama kategori yang beragam, yaitu:
-- Department
-- Salary
+Data-data ini akan dibuang agar tidak membingungkan mesin.
 
-Library scikit-learn dan pandas memiliki fitur untuk melakukan Encoding secara mudah dengan menggunakan method `get_dummies`. Maka dataset setelah dilakukan One Hot Encoding menjadi seperti berikut
+### Membuang Data yang tidak diperlukan
 
-Tabel 5. Data Encoded
+Diketahui dari proses sebelumnya bahwa, tidak ada data yang kosong (Null/NA). Namun terdapat film yang memiliki Genre **(not listed)** sehingga film dengan genre tersebut akan didrop, timestamp pada dataframe rating juga akan didrop (karena tidak digunakan). Sehingga total dari dataset movies menjadi berikut
 
-|    |   satisfaction_level |   last_evaluation |   number_project |   average_montly_hours |   time_spend_company |   Work_accident |   left |   promotion_last_5years | Department   | salary   |
-|---:|---------------------:|------------------:|-----------------:|-----------------------:|---------------------:|----------------:|-------:|------------------------:|:-------------|:---------|
-|  0 |                 0.38 |              0.53 |                2 |                    157 |                    3 |               0 |      1 |                       0 | sales        | low      |
-|  1 |                 0.8  |              0.86 |                5 |                    262 |                    6 |               0 |      1 |                       0 | sales        | medium   |
-|  2 |                 0.11 |              0.88 |                7 |                    272 |                    4 |               0 |      1 |                       0 | sales        | medium   |
-|  3 |                 0.72 |              0.87 |                5 |                    223 |                    5 |               0 |      1 |                       0 | sales        | low      |
-|  4 |                 0.37 |              0.52 |                2 |                    159 |                    3 |               0 |      1 |                       0 | sales        | low      |
+Tabel 10. Total Movies Dataset Setelah Dropout
 
-### Dataset _Splitting_
+| Column  |Total |
+|:--------|-----:|
+| movieId | 9703 |
+| title   | 9703 |
+| genres  |  9703 |
 
-Untuk setiap proyek _Machine Learning_ perlu dilakukannya proses pemisahan antara data untuk `Training` dan juga untuk `Test` agar tidak terjadi _Overfit_ ataupun _data leakage_ ketika model _Machine Learning_ selesai dibuat. Lebih lanjut fitur _Cross Validation_ juga perlu dilakukan agar datanya lebih konsisten, _Cross Validation_ akan digunakan ketika melakukan _Hyperparameter tunning_ dengan menggunakan `GridSearchCV`.
+### Merge Dataset
 
-Jumlah dataset ini cukup banyak, totalnya berjumlah 14999 dataset, sehingga pembagian dataset dengan porsi 80% training : 20% testing, sudahlah cukup. Dengan menggunakan Library Scikit-learn proses train test split dapat dengan mudah dilakukan. Random_state yang digunakan adalah _42_. Sehingga Jumlahnya menjadi:
-- Data train: 11999
-- Data test: 3000
+Untuk melakukan _Collaborative Filtering_ perlu dilakukannya kombinasi (merge) antara dataset movie dan juga dataset rating. Data datanya adalah sebagai berikut:
 
-### Scaling dan Normalisasi
+Tabel 11. Merge Dataset
 
-Dalam pemprosesan data pada _Machine Learning_ melakukan normalisasi terhadap data sangatlah penting, agar tidak terjadi ketidak seimbangan terhadap _weight_/bobot pada data dengan nilai yang tinggi dibandingkan nilai yang rendah. Terdapat beberapa jenis teknik normalisasi/_scaling_ yang sering digunakan. MinMax scaler dan Standard Scaler adalah dua teknik normalisasi yang paling populer.
+|    |   userId |   movieId |   rating | title                       | genres                                      |
+|---:|---------:|----------:|---------:|:----------------------------|:--------------------------------------------|
+|  0 |        1 |         1 |        4 | Toy Story (1995)            | Adventure|Animation|Children|Comedy|Fantasy |
+|  1 |        1 |         3 |        4 | Grumpier Old Men (1995)     | Comedy|Romance                              |
+|  2 |        1 |         6 |        4 | Heat (1995)                 | Action|Crime|Thriller                       |
+|  3 |        1 |        47 |        5 | Seven (a.k.a. Se7en) (1995) | Mystery|Thriller                            |
+|  4 |        1 |        50 |        5 | Usual Suspects, The (1995)  | Crime|Mystery|Thriller                      |
 
-MinMax Scaler bekerja dengan melakukan normalisasi data menjadi pada rentang tertentu (umumnya 0 hingga 1, atau -1 hingga 1). Sedangkan Standard scaler melakukan proses standarisasi fitur dengan menghilangkan mean dan membuat standard deviasinya data menjadi 1.
+### Tokenisasi dan Bank Token untuk Content Based Filtering
 
-Untuk menghindari kebocoran data (_data leakage_) proses standarisasi haruslah terpisah. Dengan menggunakan library scikit-learn prosesnya dalam dilakukan seperti berikut:
+Pada content based filtering kita akan melakukan rekomendasi berdasarkan kemiripan genres.Library sklearn `CountVectorizer` dan `word_tokenize` digunakan untuk melakukan ekstrasi fitur dan pembuatan token. Selanjutnya semua genres pada movie dataset akan difit untuk mendapatkan bank token.
 
-Pertama-tama scaler akan melihat persebaran data training dengan menggunakan metode `fit`
+### Dataset Split untuk Collaborative Filtering
 
-`scaler.fit(X_train)`
+Merge dataset yang telah didapatkan pada proses sebelumnya selanjutnya akan dipisahkan data training dan juga data testnya. Library `surprise` digunakan pada fase ini. Berdasarkan EDA pada sub bab sebelumnya rating yang akan digunakan berskala 0.5 sampai dengan 5. Testsize sebesar 0.3 dari total data dan random_state yang digunakan adalah 42
 
-Selanjutnya data training akan dilakukan normalisasi dengan method `transform`
-
-`scaler.transform(X_train)`
-
-Agar tidak terjadi _data leakage_ data test __tidak boleh__ diikut sertakan dalam proses fit. Dan hanya digunakan ketika melakukan transform
-
-`scaler.transform(X_test)`
-
-Berikut merupakan contoh data train setelah dilakukan proses normalisasi:
-
-Tabel 6. Normalisasi Data
-
-|       |   satisfaction_level |   last_evaluation |   number_project |   average_montly_hours |   time_spend_company |
-|------:|---------------------:|------------------:|-----------------:|-----------------------:|---------------------:|
-| 12896 |            0.474481  |         -0.562644 |         0.162568 |               0.921578 |             0.342509 |
-| 12545 |            0.675614  |          1.65763  |         0.97399  |               0.701313 |             1.02861  |
-| 14833 |           -2.05979   |         -0.971642 |        -1.46027  |               0.921578 |             0.342509 |
-|  8335 |           -0.0886901 |         -1.20536  |        -1.46027  |              -1.50134  |            -0.343595 |
-|  2724 |            0.273349  |         -1.38064  |         0.162568 |               1.00167  |             0.342509 |
+`data = Dataset.load_from_df(df_combine_new, Reader(rating_scale=(0.5, 5)))`
+`trainset, testset = train_test_split(data, test_size=0.3, random_state=42)`
 
 ***
 ## Modeling
