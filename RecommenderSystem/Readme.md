@@ -136,10 +136,10 @@ Dari Tabel 6 terlihat bahwa terdapat MovieId dengan judul yang sama sebanyak 5 M
 
 Selanjutnya untuk melakukan pengecekan apakah terdapat data yang kosong dengan menggunakan `isnull` dan juga `isna`:
 
-Total Null movies dataframe: 0
-Total NA movies dataframe: 0
-Total Null ratings dataframe: 0
-Total NA ratings dataframe: 0
+- Total Null movies dataframe: 0
+- Total NA movies dataframe: 0
+- Total Null ratings dataframe: 0
+- Total NA ratings dataframe: 0
 
 Tidak terdapat data yang kosong. Data-data statistik pada dataset ratings adalah sebagai berikut:
 
@@ -431,7 +431,7 @@ Setelah dilakukan perhitungan untuk semua data hasilnya adalah sebagai berikut:
 - MSE   : 0.775
 - RMSE  : 0.880
 
-Dari data di atas diketahui bahwa model SVD memiliki nilai MAE 0.678 dan RMSE 0.880, dimana nilai tersebut sudah cukup baik untuk sistem rekomendasi berbasis Machine Learning. Untuk dapat meningkatkan performa model berbasis Neural Network dapat dilakukan. 
+Dari data di atas diketahui bahwa model SVD memiliki nilai MAE 0.678 dan RMSE 0.880, dimana nilai tersebut sudah cukup baik untuk sistem rekomendasi berbasis Machine Learning. Untuk dapat meningkatkan performa, model berbasis Neural Network dapat digunakan. 
 
 ## Referensi
 
