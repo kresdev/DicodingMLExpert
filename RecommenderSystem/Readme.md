@@ -7,7 +7,7 @@
 
 Pada pekermbangan jaman saat ini, dimana dunia entertainment berkembang dengan saat pesat, berbagai hiburan seperti: permainan (game) dan juga film banyak diminati oleh berbagai kalangan. Saat ini layangan streaming berbayar sangatlah menjamur. Selain kualitas film yang disuguhkan salah satu faktor utama lainnya adalah relevansi antara pengguna dan juga konten dari film tersebut. Layanan streaming berbayar memiliki berbagai macam demografi pengguna, baik itu dengan usia anak-anak hinga sampai lansia. Umumnya para pengguna yang sudah lansia dan juga anak-anak tidak dapat memilih filmnya secara lebih mudah, bahkan pengguna dengan usia produktifpun terkadang masih kesusahan dalam menentukan film pilihannya. Sehingga rekomendasi film merupakan salah satu yang dapat meningkatkan tingkat minat pengguna dalam melakukan layanan streaming berbayar.
 
-Penelitian telah menunjukan rekomendasi film (_movie recommendation_) merupakan faktor penting dalam sebuah aplikasi streaming berbayar. Berbagai peneliti mencoba menemukan teknik-teknik yang efektif untuk melakukan rekomendasi film, seperti yang dilakukan oleh Halder, et.al dengan melakukan _Movie Recommendation System Based on Movie Swarm_ [1](https://ieeexplore.ieee.org/document/6382910), ataupun yang berbasis Content Based Filtering seperti yang dilakukan oleh Reddy, et.al [2](https://www.researchgate.net/publication/331966843_Content-Based_Movie_Recommendation_System_Using_Genre_Correlation) ataupun yang berbasis Collaborative Filtering yang dilakukan oleh Schafer, et.al [3](https://www.researchgate.net/publication/200121027_Collaborative_Filtering_Recommender_Systems). Berbagai teknik ini memiliki tujuan utama yang pada akhirnya adalah dapat meningkatan nilai bisnis dari suatu layanan berbayar.
+Penelitian telah menunjukan rekomendasi film (_movie recommendation_) merupakan faktor penting dalam sebuah aplikasi streaming berbayar. Berbagai peneliti mencoba menemukan teknik-teknik yang efektif untuk melakukan rekomendasi film, seperti yang dilakukan oleh Halder, et.al dengan melakukan _Movie Recommendation System Based on Movie Swarm_ [[1]](https://ieeexplore.ieee.org/document/6382910), ataupun yang berbasis Content Based Filtering seperti yang dilakukan oleh Reddy, et.al [[2]](https://www.researchgate.net/publication/331966843_Content-Based_Movie_Recommendation_System_Using_Genre_Correlation) ataupun yang berbasis Collaborative Filtering yang dilakukan oleh Schafer, et.al [[3]](https://www.researchgate.net/publication/200121027_Collaborative_Filtering_Recommender_Systems). Berbagai teknik ini memiliki tujuan utama yang pada akhirnya adalah dapat meningkatan nilai bisnis dari suatu layanan berbayar.
 
 Permasalahan ini merupakan salah satu hal terberat bagi suatu perusahaan layanan streaming berbayar agar dapat memberikan rekomendasi film terbaik kepada penggunanya. Semakin relevan rekomendasi yang diberikan, penggunaan aplikasi akan semakin meningkat sehingga dapat meningkatnya juga jumlah pengguna secara jangka panjang. Dengan menggunakan _Machine Learning_ masalah ini dapat dengan lebih baik diselesaikan. Teknik-teknik dengan berbasis Content ataupun dengan menggunakan Collaborative Filtering dapat digunakan sehingga pengguna baru ataupun pengguna yang bahkan belum pernah menyaksikan film tersebut bisa mendapatkan rekomendasi yang relevan sesuai _behaviour_.
 
@@ -75,10 +75,10 @@ Tabel 2. 5 Data awal Movies Dataset
 
 |  # |   movieId | title                              | genres                                      |
 |---:|----------:|:-----------------------------------|:--------------------------------------------|
-|  0 |         1 | Toy Story (1995)                   | Adventure|Animation|Children|Comedy|Fantasy |
-|  1 |         2 | Jumanji (1995)                     | Adventure|Children|Fantasy                  |
-|  2 |         3 | Grumpier Old Men (1995)            | Comedy|Romance                              |
-|  3 |         4 | Waiting to Exhale (1995)           | Comedy|Drama|Romance                        |
+|  0 |         1 | Toy Story (1995)                   | Adventure;Animation;Children;Comedy;Fantasy |
+|  1 |         2 | Jumanji (1995)                     | Adventure;Children;Fantasy                  |
+|  2 |         3 | Grumpier Old Men (1995)            | Comedy;Romance                              |
+|  3 |         4 | Waiting to Exhale (1995)           | Comedy;Drama;Romance                        |
 |  4 |         5 | Father of the Bride Part II (1995) | Comedy                                      |
 
 Tabel 3. 5 Data awal Ratings Dataset
@@ -203,10 +203,10 @@ Tabel 9. Film Duplikat dengan Judul yang Sama
 |      |   movieId | title                                  | genres                              |
 |-----:|----------:|:---------------------------------------|:------------------------------------|
 | 5601 |     26958 | Emma (1996)                            | Romance                             |
-| 6932 |     64997 | War of the Worlds (2005)               | Action|Sci-Fi                       |
-| 9106 |    144606 | Confessions of a Dangerous Mind (2002) | Comedy|Crime|Drama|Romance|Thriller |
-| 9135 |    147002 | Eros (2004)                            | Drama|Romance                       |
-| 9468 |    168358 | Saturn 3 (1980)                        | Sci-Fi|Thriller                     |
+| 6932 |     64997 | War of the Worlds (2005)               | Action;Sci-Fi                       |
+| 9106 |    144606 | Confessions of a Dangerous Mind (2002) | Comedy;Crime;Drama;Romance;Thriller |
+| 9135 |    147002 | Eros (2004)                            | Drama;Romance                       |
+| 9468 |    168358 | Saturn 3 (1980)                        | Sci-Fi;Thriller                     |
 
 Data-data ini akan dibuang agar tidak membingungkan mesin.
 
@@ -230,235 +230,213 @@ Tabel 11. Merge Dataset
 
 |    |   userId |   movieId |   rating | title                       | genres                                      |
 |---:|---------:|----------:|---------:|:----------------------------|:--------------------------------------------|
-|  0 |        1 |         1 |        4 | Toy Story (1995)            | Adventure|Animation|Children|Comedy|Fantasy |
-|  1 |        1 |         3 |        4 | Grumpier Old Men (1995)     | Comedy|Romance                              |
-|  2 |        1 |         6 |        4 | Heat (1995)                 | Action|Crime|Thriller                       |
-|  3 |        1 |        47 |        5 | Seven (a.k.a. Se7en) (1995) | Mystery|Thriller                            |
-|  4 |        1 |        50 |        5 | Usual Suspects, The (1995)  | Crime|Mystery|Thriller                      |
+|  0 |        1 |         1 |        4 | Toy Story (1995)            | Adventure;Animation;Children;Comedy;Fantasy |
+|  1 |        1 |         3 |        4 | Grumpier Old Men (1995)     | Comedy;Romance                              |
+|  2 |        1 |         6 |        4 | Heat (1995)                 | Action;Crime;Thriller                       |
+|  3 |        1 |        47 |        5 | Seven (a.k.a. Se7en) (1995) | Mystery;Thriller                            |
+|  4 |        1 |        50 |        5 | Usual Suspects, The (1995)  | Crime;Mystery;Thriller                      |
 
 ### Tokenisasi dan Bank Token untuk Content Based Filtering
 
-Pada content based filtering kita akan melakukan rekomendasi berdasarkan kemiripan genres.Library sklearn `CountVectorizer` dan `word_tokenize` digunakan untuk melakukan ekstrasi fitur dan pembuatan token. Selanjutnya semua genres pada movie dataset akan difit untuk mendapatkan bank token.
+Pada content based filtering kita akan melakukan rekomendasi berdasarkan kemiripan genres. Library sklearn `CountVectorizer` dan `word_tokenize` digunakan untuk melakukan ekstrasi fitur dan pembuatan token berbasis Bag of Words. Selanjutnya semua genres pada movie dataset akan difit untuk mendapatkan bank token.
 
 ### Dataset Split untuk Collaborative Filtering
 
 Merge dataset yang telah didapatkan pada proses sebelumnya selanjutnya akan dipisahkan data training dan juga data testnya. Library `surprise` digunakan pada fase ini. Berdasarkan EDA pada sub bab sebelumnya rating yang akan digunakan berskala 0.5 sampai dengan 5. Testsize sebesar 0.3 dari total data dan random_state yang digunakan adalah 42
 
 `data = Dataset.load_from_df(df_combine_new, Reader(rating_scale=(0.5, 5)))`
+
 `trainset, testset = train_test_split(data, test_size=0.3, random_state=42)`
 
 ***
 ## Modeling
 
-Pada projek ini terdapat 3 macam algoritma _Machine Learning_ yang digunakan yaitu:
-1. KNN
-2. SVM
-3. Random Forest
+Pada projek ini terdapat 2 macam _Recommender System_ yang digunakan yaitu:
+1. Content Based Filtering
+2. Collaborative Filtering
 
-Semua model dilatih dengan menggunakan parameter dasar. Selanjutnya akan dilakukan _tunning_ pada beberapa parameter baik secara konvensional ataupun dengan menggunakan `GridSearchCV`.
+### Content-Based Filtering
 
-### K-Nearest Neighbors (KNN)
+Content based filtering menggunakan fitur dari item untuk merekomendasikan item yang mirip yang user sukai berdasarkan aksi sebelumnya atau dari feedback pengguna. Content based filtering bertujuan untuk memberikan rekomendasi dari kesamaan fitur yang didapat dari pengguna. Contohnya ketika menonton suatu film pada layanan streaming tertentu, pengguna bisa yang terbiasa menonton film dengan tema horor untuk selanjutnya ketika membuka aplikasi tersebut akan direkomendasikan film-film bertema horor.
 
-KNN adalah salah satu algoritma _Machine Learning_ bertipe _supervised_ dimana dibutuhkannya suatu label. KNN bekerja dengan cara mengidentifikasikan jarak antara 'tetangga', dimana `K` pada KNN adalah jumlah tetangga yang akan dilihat. Tahapan cara kerja KNN adalah sebagai berikut:
-
-1. Menentukan banyaknya jumlah tetangga yang akan dipakai (K).
-2. Menghitung jarak antara dokumen testing dan training dengan menggunakan metode distance (umumnya Euclidean atau Manhatan).
-3. Mengurutkan data berdasarkan jarak terkecil.
-4. Menentukan kelompok testing berdasarkan jumlah tetangga (K) yang telah dipilih.
-
-__Keuntungan__
-
-1. Algortima KNN sederhana dan mudah diimplementasikan.
-2. Algoritma multifungsi dapat digunakan untuk kasus klasifikasi, regresi, dan pencarian.
-3. Tidak ada periode training, sehingga data baru lebih mudah ditambahkan.
-
-__Kekurangan__
-
-1. Tidak berjalan secara baik pada dataset yang besar. Perlu dilakukannya perhitungan jarak dapat meningkatkan beban komputasi mesin.
-2. Tidak berjalan baik pada data berdimensi tinggi. Karena KNN berdasarkan perhitungan jarak, akan lebih sulit melakukannya pada dimensi tinggi.
-3. Membutuhkan _scaling_ fitur. Perhitungan jarak dengan data acuan yang berbeda-beda akan membuat hasilnya tidak akurat, sehingga perlu dilakukannya _scaling_/normalisasi data.
-
-Pada proyek ini, pertama-tama KNN akan menggunakan __n_neighbors=10__ tetangga terdekat. Dan setelahnya akan dilakukan proses _tunning_ secara manual untuk mencari nilai K terbaik dari 1-20 tetangga hingga mendapatkan akurasi testing yang paling tinggi. Perhitungan jarak antar tetangga yang dipakai adalah Euclidean distance.
-
-### Support Vector Machine (SVM)
-
-Sama dengan KNN, SVM merupakan metode _supervised learning_. Dimana terdapat dua tipe SVM yang umum digunakan yaitu _Support Vector Classificatioin (SVC)_ dan juga _Support Vector Regression (SVR)_. SVM juga dapat mengatasi masalah klasifikasi dan regresi baik secara _linear_ ataupun _non-linear_
-
-Cara kerja SVM adalah dengan menemukan _hyperplace_ (jalan raya) terbaik dengan memaksimalkan jarak antar kelas sehingga dapat memisahkan titik-titik pada input. SVM dulunya dikenal sebagai _maximum margin classifier_. Ternyata alternatif untuk memperoleh _maximum margin_ adalah dengan mencari _support vector_ . Itulah mengapa nama algoritma ini juga disebut sebagai Support Vector Machine, yakni mesin pencari _support vector_.Gambar berikut menunjukan ilustrasi pada SVM.
-
-![SVM](https://user-images.githubusercontent.com/60245989/201678523-204899d3-af83-4e12-991f-b20719c80124.png)
-
-Gambar 7. Ilustrasi SVM
-
-Salah satu parameter penting pada SVM adalah __C-Penalty Parameter__ dimana:
-- Semakin besar __C__ -> Semakin besar penalty terhadap kesalah -> lebih sensitif
-- Semakin kecil __C__ -> Semakin toleran terhadap kesalahan -> lebih smooth
-
-Selain itu pada data yang lebih kompleks, data-data dapat ditransformasikan ke dalam dimensi lain dengan mengubah jenis kernelnya. Terdapat parameter lainnya yaitu $\gamma$ kernel coefficient, dimana:
-
-- Semakin besar $\gamma$ -> semakin detail oriented -> lebih sensitif
-- Semakin kecil $\gamma$ -> semakin melihat big picture -> lebih smooth
+Pada penerapannya biasanya content based filtering akan menggunakan perhitungan vektor, dimana item-item yang akan dilakukan perhitungan sebelumnya akan diubah kedalam bentuk token baik itu dengan Bag of Words ataupun TFIDF. Langkah-langkahnya adalah sebagai berikut:
+1. Tentukan fitur yang akan digunakan pada dataset.
+2. Ubah fitur menjadi bentuk token (contohnya dengan menggunakan CountVectorizer menjadi Bag of Words).
+3. Membuat bank token yang berisikan semua kumpulan token pada fitur.
+4. Melakukan perhitungan vektor dengan menggunakan similarity formula seperti contohnya cosine similarity.
+5. Mencari top-n rekomendasi berdasarkan kemiripan dari cosine similarity.
 
 __Keuntungan__
 
-1. SVM bekerja relatif baik ketika terdapat pemisahan yang cukup jelas antar kelas.
-2. SVM lebih efektif pada data berdimensi tinggi.
-3. SVM relatif lebih efektif secara memori.
+1. Model tidak membutuhkan data dari user lainnya, karena rekomendasi spesifik terhadap user tersebut. Hal ini membuat lebih mudah dalam melakukan scale up dengan jumlah user yang lebih banyak.
+2. Model dapat menangkap minat khusus pengguna, dan apat merekomendasikan item khusus yang sangat sedikit diminati oleh pengguna lain.
 
 __Kekurangan__
 
-1. SVM tidak cocok untuk dataset yang besar.
-2. SVM tidak bekerja secara baik ketika dataset terdapat banyak _noise_ contohnya pada target kelas yang overlap.
-3. SVM Membutuhkan waktu training yang relatif lebih lama.
+1. Model dibuat berdasarkan ketrampilan proses dari engineer, sehingga membutuhkan domain knowledge yang lebih luas untuk mendapatkan rekomendasi yang sesuai.
+2. Model hanya bisa membuat rekomendasi berdasarkan user yang ada. Sehingga dengan user yang terbatas model tidak mampu bekerja secara maksimal.
 
-Pada proyek ini, pertama-tama SVM akan menggunakan nilai default dimana nilai C=1. Dan setelahnya akan dilakukan proses _tunning_ secara manual untuk mencari nilai C terbaik dari 1-1000 dengan skala pengali 10 hingga mendapatkan akurasi testing yang paling tinggi. Kernel yang digunakan bernilai default.
+Pada proyek ini setelah dilakukan pembuatan token pada data preparation. Selanjutnya akan dipilih 1 film yaitu Jumanji dengan genres Adventure|Children|Fantasy. Data genres akan diubah kedalam bentuk token dengan menggunakan class Bag of Words yang telah dibuat sebelumnya.
 
-### Random Forest
+`code = bow.transform([content])`
 
-Random Forest merupakan salah satu metode dalam _Decision Tree_ yang menggunakan teknik bagging, dimana beberapa model bekerja bersama-sama (_ensemble_) untuk mendapatkan suatu keputusan, sehingga tingkat keberhasilannya akan semakin tinggi. 
+selanjutnya hasil encode token akan dibandingkan dengan bank token dengan menggunakan cosine similarity
 
-_Decision Tree_ sendiri adalah suatu diagram alir yang terdiri dari _ node_ yang berisikan _root_ dan juga _leaf_, dimana masing-masingnya akan memecahkan masalah secara independen lalu menggabungkanya. Berikut adalah ilustrasi dari Random Forest.
+`dist = cosine_distances(code, bank)` 
 
-![Random Forest](https://user-images.githubusercontent.com/60245989/201685936-7cf555bf-1b51-4e89-9519-18ec8a040a6d.gif)
+dan akan diambil hasil 10 rekomendasi termirip yang didapatkan dari cosine similarity, 
 
-Gambar 8. Ilustrasi Random Forest (source:  Tensorflow Blog)
+Tabel 12. Rekomendasi Content Based Filtering
 
-Terdapat beberapa parameter pada Random Forest diantaranya:
-- n_estimator -> jumlah tress (pohon).
-- max_depth -> kedalaman suatu cabang pohon (percabangan/pembelahan pohon).
-- min_sample_leaf -> minimal leaf node yang ada.
+|      |   movieId | title                                                                                          | genres                     |
+|-----:|----------:|:-----------------------------------------------------------------------------------------------|:---------------------------|
+|   53 |        60 | Indian in the Cupboard, The (1995)                                                             | Adventure;Children;Fantasy |
+| 7476 |     82152 | Beastly (2011)                                                                                 | Drama;Fantasy;Romance      |
+| 8228 |    104017 | 3 dev adam (Three Giant Men) (1973)                                                            | Action;Adventure;Sci-Fi    |
+| 9275 |    157312 | The Boss (2016)                                                                                | Comedy                     |
+| 6628 |     56169 | Awake (2007)                                                                                   | Drama;Thriller             |
+|  109 |       126 | NeverEnding Story III, The (1994)                                                              | Adventure;Children;Fantasy |
+| 1556 |      2093 | Return to Oz (1985)                                                                            | Adventure;Children;Fantasy |
+| 3574 |      4896 | Harry Potter and the Sorcerer's Stone (a.k.a. Harry Potter and the Philosopher's Stone) (2001) | Adventure;Children;Fantasy |
+| 1799 |      2399 | Santa Claus: The Movie (1985)                                                                  | Adventure;Children;Fantasy |
+| 1618 |      2162 | NeverEnding Story II: The Next Chapter, The (1990)                                             | Adventure;Children;Fantasy |
 
-__Kelebihan__
+Dari 10 rekomendasi yang diberikan. terdapat 8 film dengan genre yang hampir sama. Hanya 2 film saja yang memiliki genre yang berbeda.
 
-1. Random Forest berbasis _bagging_ dan menggunakan _ensemble learning_ dimana dapat mengurangi masalah _overfitting_ pada _decision tree_ dan juga mengurangi _variance_ sehingga dapat meningkatkan akurasai.
-2. Random Forest dapat menangani _missing value_.
-3. Random Forest tidak membutuhkan fitur _scaling_.
-4. Random Forest robust terhadap _outliers_.
-5. Random Forest memiliki efek yang rendah terhadap _noise_ dan relatif stabil.
+### Collaborative Filtering
+
+Collaborative filtering memanfaatkan kesamaan ketertarikan/perilaku antar pengguna dan item. Sehingga pengguna bisa mendapatkan rekomendasi berdasarkan kesamaan dari pengguna lainnya, meskipun pengguna tersebut belum pernah memilih item tersebut. Collaborative filtering umumnya terbagi menjadi dua yaitu:
+
+- User Based Collaborative Filtering (UB-CF)
+- Item Based Collaborative Filtering (IB-CF)
+
+User Based merekomendasikan item berdasarkan pengguna yang mirip dengan dirinya. Contohnya berdasarkan historynya user A dan user B memiliki ketertarikan yang sama dengan film-film bertema pahlawan dan action, user B sudah menonton film spiderman, sehingga sistem merekomendasi A untuk menonton film spiderman karena memiliki kemiripan yang sama dengan user B.
+
+Item Based merekomendasikan kesamaan item yang berkeaitan dengan pengguna dan item lainnya. Contohnya jika seorang pengguna menyukai suatu grup idol K-POP, sistem akan merekomendasikan barang-barang yang berkaitan dengan idol K-POP tersebut seperti baju, foto, dan marchandise lainnya.
+
+Tahapan-tahapan dalam collaborative filltering pada proyek ini adalah sebagai berikut:
+1. Menggabungkan dataset user dan juga content yang akan diproses.
+2. Memisahkan antara trainset dan juga test set.
+3. Melakukan training dengan menggukana SVD.
+4. Melakukan rekomendasi (top-n) film-film yang belum pernah ditonton oleh user berdasarkan model SVD.
+
+__Keuntungan__
+
+1. Tidak memerlukan domain knowledge. Karena Embedding akan dilakukan otomatis oleh Machine Learning.
+2. Model dapat membuat pengguna menemukan minat baru. Model ML mungkin saja tidak mengetahui secara pasti rekomendasinya, namun berdasarkan kesamaan pengguna bisa jadi model ML memberikan ketertarikan baru pada pengguna.
+3. Tidak membutuhkan detail mendalam dari suatu produk.
 
 __Kekurangan__
 
-1. Random Forest memiliki kompleksitas yang tinggi.
-2. Random Forest memiliki training periode yang lama, sehingga membutuhkan mesin komputasi yang lebih baik.
+1. Keterbatasan data. Akan sulit melakukan rekomendasi kepada user yang baru.
+2. Skalabilitas yang terbatas. Dengan bertambahnya jumlah pengguna peningkatkan perhitungan juga akan berdampak.
+3. Sinonim dan keberagamaan. Collaborative filtering cenderung lebih sulit dalam membedakan sinonim dan juga kebaragaman dalam suatu item.
 
-Pada projek ini nilai parameter awal Random Forest Classifier adalah sebagai berikut: n_estimators=5, max_depth=5, random_state=42, n_jobs=-1. 
+Pada proyek ini model Machine Learning yang digunakan adalah SVD. setelah melakukan dataset splitting selanjutnya model akan ditrain menggunakan training dataset. Dan model akan melakukan prediksi film-film yang belum pernah ditonton oleh user yang mungkin diminati oleh user. Contoh hasilnya adalah sebagai berikut:
 
-Setelahnya dilakukan _tunning_ dengan menggunakan metode GridSearchCV. Metode ini digunakan untuk melakukan _tunning_ parameter-parameter algoritma secara otomatis, dan juga ditambah dengan melakukan _k fold cross validation_ untuk mendapatkan parameter terbaik. Kelebihan dan kekurangan dari GridSearch adalah sebagai berikut:
+Tabel 13. Rekomendasi Collaborative Filtering
 
-- Input berupa semua kombinasi hyperparameter yang ingin dicoba.
-- Menjamin score terbaik dari semua kombinasi.
-- Komputasi berat karena semua kombinasi dilakukan.
-- Tidak cocok dipakai untuk algoritma dengan banyak hyperparameter.
+|      |   movieId | title                                                                       | genres                      |   pred_score |
+|-----:|----------:|:----------------------------------------------------------------------------|:----------------------------|-------------:|
+|  232 |       318 | Shawshank Redemption, The (1994)                                            | Crime;Drama                 |      4.39145 |
+| 2395 |      1204 | Lawrence of Arabia (1962)                                                   | Adventure;Drama;War         |      4.37225 |
+|  722 |       750 | Dr. Strangelove or: How I Learned to Stop Worrying and Love the Bomb (1964) | Comedy;War                  |      4.31638 |
+| 1027 |       858 | Godfather, The (1972)                                                       | Crime;Drama                 |      4.25985 |
+| 1110 |      1276 | Cool Hand Luke (1967)                                                       | Drama                       |      4.2485  |
+| 1184 |      3275 | Boondock Saints, The (2000)                                                 | Action;Crime;Drama;Thriller |      4.24442 |
+|  332 |       904 | Rear Window (1954)                                                          | Mystery;Thriller            |      4.24153 |
+|   74 |      1213 | Goodfellas (1990)                                                           | Crime;Drama                 |      4.24099 |
+|  192 |      2959 | Fight Club (1999)                                                           | Action;Crime;Drama;Thriller |      4.24052 |
+| 2158 |      3451 | Guess Who's Coming to Dinner (1967)                                         | Drama                       |      4.24031 |
 
-Pada projek kali ini parameter yang digunakan pada Random Forest adalah sebagai berikut:
-- "n_estimators": [25, 50, 100],
-- "max_depth": [10, 20, 30],
-- "min_samples_leaf": [1, 5, 10]
-
-GridSearch akan secara otomatis menentukan model dengan hyperparameter terbaik setelah juga melakukan _cross validation_.
-
-## Evaluation
-
-Pada proyek ini permasalahan berjenis klasifikasi, sehinga metrik evaluasinya adalah precision, recall, dan F1 score. Metrik ini biasa dikenal dengan sebutan __Confusion Matrix__ Secara matematis metrik evaluasi _Confusion Matrix_ pada _binary classification_ (Yes/No) adalah sebagai berikut
-
-![1_M0Ex70vbOhV9eHKAdk7Ekg](https://user-images.githubusercontent.com/60245989/201802447-b60b9c0c-1fee-4944-9f45-340867d77b3d.png)
-
-Gambar 9. _Confusion Matrix_ [res. stevkarta](https://stevkarta.medium.com/membicarakan-precision-recall-dan-f1-score-e96d81910354)
-
-0 untuk label negatif dan 1 untuk label positif. Istilah-istilah pada _confusion matrix_:
-- True Negative (TN): Model memprediksi hasil __Negatif__ dan data sebenarnya adalah __Negatif__.
-- True Positive (TP): Model memprediksi hasil __Positif__ dan data sebenarnya adalah __Positif__.
-- False Negative (FN): Model memprediksi hasil __Negatif__, namun data sebenarnya adalah __Positif__.
-- False Positive (FP): Model memprediksi hasil __Positif__, namun data sebenarnya adalah __Negatif__.
-
-Mendapatkan nilai TN dan TP terbanyak adalah tujuan dari model. Namun, dalam kenyataanya prediksi FN atau FP seringlah terjadi. Pada beberapa kasus, kita dituntut untuk mendapatkan model yang akan lebih toleran pada FN dan dikasus lain akan lebih toleran pada FP. Contohnya pada model prediksi pasin kanker, FP lebih toleran dari pada FN, karena lebih baik pasien terprediksi terkena kanker (meskipun aslinya tidak) dibandingkan pasien diprediksi __tidak__ terkena kanker dan ternyata aslinya pasien mengidap kanker (False Negative).
-
-Pemilihan toleransi antara FP dan FN akan bergantung pada pemilihan tipe error, lebih diutamakan __Precision__ atau __Recall__.
-
-Precision, secara definisi adalah perbandingan antara True Positive (TP) dengan banyaknya data yang diprediksi positif. Atau secara matematis
-
-![0_fD_fCLwvjNnp2Nel](https://user-images.githubusercontent.com/60245989/201803735-3a27c74f-0b5b-4daf-8811-4784fa448560.gif)
-
-Recall, secara definisi adalah perbandingan antara True Positive (TP) dengan banyaknya data yang sebenarnya positif. Atau secara matematis
-
-![0_jnTAutFpHEVqqBHJ](https://user-images.githubusercontent.com/60245989/201803902-798b61bf-92c8-47d3-952a-435880a92ab2.gif)
-
-Jika dilihat dari dua persamaan di atas maka terlihta pada _precision_ semakin kecil nilai False Positive maka nilainya _precision_ akan semakin besar. Begitu juga pada _recall_. Pada contoh kasus di kanker di atas, FN yang kecil lebih baik ketimbang FP sehingga acuan _recall_ bisalah digunakan.
-
-Namun terkadang terdapat dilema dalam memilih _precision_ dan juga _recall_, dan kita perlu score yang sama-sama tinggi. Untuk mendapatkan hasil yang seimbang terdapat metode lain yaitu __F1-Score__ yang secara definisi adalah harmonic mean dari _precision_ dan _recall_. Secara matematis ditulis sebagia berikut
-
-![0_RdOj9EZ6TbVmwWmi](https://user-images.githubusercontent.com/60245989/201804716-a4ab55fb-73ad-4029-95b2-b8a223681043.gif)
-
-Terlebih F1-Score cocok untuk data klasifikasi yang tidak seimbang (_imbalance dataset_). Sehingga F1-Score akan dijadikan acuan pada projek kali ini.
-
-Berikut adalah hasil _Consufion Matrix_ pada setiap model
-
-__KNN__
-
-![KNN_F1](https://user-images.githubusercontent.com/60245989/201805289-18da32a9-4ce7-4017-96f0-073c044d2f09.PNG)
-
-Gambar 10. Confusion Matrix KNN
-
-__SVM__
-
-![SVM_F1](https://user-images.githubusercontent.com/60245989/201805347-c83d6939-7a63-43d6-9902-e6c28593e14e.PNG)
-
-Gambar 11. Confusion Matrix SVM
-
-__Random Forest__
-
-![RF_F1](https://user-images.githubusercontent.com/60245989/201805392-d2f41cbe-76c1-4f95-be59-dfb49459072a.PNG)
-
-Gambar 12. Confusion Matrix Random Forest
-
-__Random Forest dengan GridSearch__
-
-![GSV_F1](https://user-images.githubusercontent.com/60245989/201805430-b437f2b6-fb67-4842-a054-f78a7505f301.PNG)
-
-Gambar 13. Confusion Matrix Random Forest dengan GridSearch
-
-
-Terlihat bahwa model Random Forest dengan _Hyperparameter_ yang telah ditunning dengan menggunakan GridSearch memiliki nilai F1-Score yang paling tinggi. Sehingga model inilah yang akan digunakan dalam proyek ini.
-
-Selanjutnya prediksi dengan menggunakan Real Data digunakan pada 10 data acak. Hasilnya adalah sebagai berikut
-
-Tabel 7. Prediksi Real Data
-
-|       |   y_true |   KNN |   SVM |   RandomForest |   GridSearch |
-|------:|---------:|------:|------:|---------------:|-------------:|
-|  4278 |        0 |     0 |     0 |              0 |            0 |
-|   244 |        1 |     1 |     1 |              0 |            1 |
-| 10646 |        0 |     0 |     0 |              0 |            0 |
-|  1818 |        1 |     1 |     1 |              0 |            1 |
-|  2950 |        0 |     0 |     0 |              0 |            0 |
-|  9241 |        0 |     0 |     0 |              0 |            0 |
-|  1153 |        1 |     1 |     1 |              1 |            1 |
-|  7535 |        0 |     0 |     0 |              0 |            0 |
-| 13541 |        0 |     0 |     0 |              0 |            0 |
-| 11167 |        0 |     0 |     0 |              0 |            0 |
-
-Random Forest basic memiliki kekeliruan dalam memprediksi nilai 1 (True), ini selaras dengan hasil pada confusion matrix, dimana F1-Scorenya hanya sebesar 0.81
-
-### Feature Importance
-
-Tujuan akhir dari proyek ini bukan hanya menemukan model dengan tingkat akurasi terbaik. Tapi mengetahui fitur apa yang paling berpengaruh terhadap perginya seorang karyawan dari suatu perusahaan. Setelah menentukan model terbaik yaitu Random Forest dengan GridSearch, hal selanjutnya adalah mengetahui fitur yang paling penting untuk direkomendasikan kepada bagian HR. Random Forest sudah memiliki data fitur pada bagian `feature_importances_` kita dapat langsung memanggilnya. Hasilnya adalah sebagai berikut
-
-![Feature Importance](https://user-images.githubusercontent.com/60245989/201806521-fce71354-d5ef-435a-b971-250defa1169b.png)
-
-Gambar 14. Feature Importance
-
-Dari data diketahui __satisfaction_level__ lah nilai yang sangat mempengaruhi untuk pengunduran diri karyawan dimana hasil ini sesuai dengan EDA pada bagian sebelumnya. Sehingga HR perlu  menjaga kepuasaan setiap karyawannya. Selain itu banyaknya projek yang diterima, dan jumlah jam kerja setiap bulannya, waktu yang dihabiskan di perusahaan, dan evaluasi terakhir juga mempengaruhi perginya seorang karyawan dari suatu perusahaan.
+Data di atas merupakan hasil rekomendasi dari user 0. Dapat dilihat user 0 direkomendasikan film-film dengan tema drama, action dan adventure.
 
 ***
-## Kesimpulan
+## Evaluation
 
-Dari data HR Analytics didapatkan model terbaik adalah Random Forest dengan melakukan _tunning_ parameter menggunakan GridSearch dengan nilai F1-Score pada True sebesar 0.98. Selain itu juga Random Forest dapat mengetahui _Feature Importance_ untuk mengetahui fitur paling penting yang mempengaruhi prediksi. Dari Proses ini diketahui bahwa `satisfication_level` atau kepuasaan seorang karyawan terhadap suatu perusahaan adalah faktor terbesar yang menentukan seorang karyawan dapat pergi atau tetap tingal di suatu perusahaan. Selanjutnya data-data ini dapat digunakan HR sebagai acuan untuk menjaga kestabilan perusahaan.
+Pada proyek ini terdapat 2 jenis recommender system yang digunakan. Kedua hal tersebut tidak bisa dievaluasi dengan menggunakan metrik yang sama. Pada Content based filtering, metrik evaluasi yang digunakan adalah presisi sedangkan pada collaborative filtering metrik evaluasi yang digunakaan adalah Root Mean Square Error (RMSE) dan juga Mean Absolute Error (MAE).
 
+### Content Based Filtering
+
+Untuk mengetahui presisi dari rekomendasi formula yang digunakan adalah sebagai berikut:
+
+![dos_819311f78d87da1e0fd8660171fa58e620211012160253 (1)](https://user-images.githubusercontent.com/60245989/204700359-da5cc590-2940-4780-a97b-f66cca6b215c.png)
+
+Dimana jumlah rekomendasi yang relevan akan dibagi dengan total jumlah yang direkomendasikan. Pada proyek ini akan dilakukan rekomendasi sebanyak 20 buah, dan akan dilihat sebarap banyak rekomendasi yang masih relevan terhadap film yang diberikan. Film yang akan dicari rekomendasinya adalah jumanji dengan genres Adventure|Children|Fantasy rekomendasinya adalah sebagai berikut:
+
+Tabel 14. Top 20 Rekomendasi Jumanji
+
+|      |   movieId | title                                                                                          | genres                                |
+|-----:|----------:|:-----------------------------------------------------------------------------------------------|:--------------------------------------|
+|   53 |        60 | Indian in the Cupboard, The (1995)                                                             | Adventure;Children;Fantasy            |
+| 7476 |     82152 | Beastly (2011)                                                                                 | Drama;Fantasy;Romance                 |
+| 8228 |    104017 | 3 dev adam (Three Giant Men) (1973)                                                            | Action;Adventure;Sci-Fi               |
+| 9275 |    157312 | The Boss (2016)                                                                                | Comedy                                |
+| 6628 |     56169 | Awake (2007)                                                                                   | Drama;Thriller                        |
+|  109 |       126 | NeverEnding Story III, The (1994)                                                              | Adventure;Children;Fantasy            |
+| 1556 |      2093 | Return to Oz (1985)                                                                            | Adventure;Children;Fantasy            |
+| 3574 |      4896 | Harry Potter and the Sorcerer's Stone (a.k.a. Harry Potter and the Philosopher's Stone) (2001) | Adventure;Children;Fantasy            |
+| 1799 |      2399 | Santa Claus: The Movie (1985)                                                                  | Adventure;Children;Fantasy            |
+| 1618 |      2162 | NeverEnding Story II: The Next Chapter, The (1990)                                             | Adventure;Children;Fantasy            |
+| 6388 |     50514 | After the Wedding (Efter brylluppet) (2006)                                                    | Drama                                 |
+| 9531 |    172253 | The Night Before (1988)                                                                        | Comedy                                |
+| 1514 |      2043 | Darby O'Gill and the Little People (1959)                                                      | Adventure;Children;Fantasy            |
+| 1617 |      2161 | NeverEnding Story, The (1984)                                                                  | Adventure;Children;Fantasy            |
+| 7424 |     80693 | It's Kind of a Funny Story (2010)                                                              | Comedy;Drama                          |
+|    1 |         2 | Jumanji (1995)                                                                                 | Adventure;Children;Fantasy            |
+| 6654 |     56908 | Dedication (2007)                                                                              | Comedy;Drama;Romance                  |
+| 8794 |    130050 | Digging Up the Marrow (2014)                                                                   | Drama;Fantasy;Horror;Mystery;Thriller |
+| 8638 |    119155 | Night at the Museum: Secret of the Tomb (2014)                                                 | Adventure;Children;Comedy;Fantasy     |
+|  767 |      1009 | Escape to Witch Mountain (1975)                                                                | Adventure;Children;Fantasy            |
+
+Dapat dilihat bahwa genres yang tidak relevan terdapat 6 buah yaitu:
+
+- The Boss (2016) = Comedy
+- Awake (2007) = Drama;Thriller
+- After the Wedding (Efter brylluppet) (2006) = Drama
+- The Night Before (1988) = Comedy
+- It's Kind of a Funny Story (2010) = Comedy;Dram
+- Dedication (2007) = Comedy;Drama;Romance
+
+Sehingga Presisinya adalah `14/20= 0.7 = 70%`
+
+### Collaborative Filtering
+
+Metrik evaluasi yang digunakan pada Collaborative filtering adalah RMSE dan juga MAE. Dimana kedua formula tersebut membandingan nilai actual dan juga nilai prediksi untuk mengetahui errornya. Formulanya adalah sebagai berikut
+
+![download](https://user-images.githubusercontent.com/60245989/204703396-a1d9c85b-d229-4042-a530-f573914755a0.png)
+
+![download](https://user-images.githubusercontent.com/60245989/204703412-0da899e0-ed44-43ff-be39-f56f854a9445.png)
+
+Keterangan:
+- y: nilai aktual
+- y^: nilai prediksi
+- n: jumlah total sampel
+
+Pada collaborative filtering sebelumnya data telah dibagi menjadi data training dan juga data test. Untuk melakukan evaluasi metrik data test akan dilakukan. Hasil datanya dalah sebagai berikut:
+
+Tabel 15. 5 Data perbandingan actual dan prediksi score pada Collaborative Filtering
+
+|    |   userId |   movieId |   Rating_actual |   Rating_predictions |
+|---:|---------:|----------:|----------------:|---------------------:|
+|  0 |      217 |      1287 |             3   |              2.90435 |
+|  1 |      594 |      7032 |             4   |              3.96098 |
+|  2 |      117 |       697 |             3   |              3.20588 |
+|  3 |      610 |     43928 |             2   |              3.11187 |
+|  4 |      414 |      3986 |             1.5 |              2.9064  |
+
+Setelah dilakukan perhitungan untuk semua data hasilnya adalah sebagai berikut: 
+
+- MAE   : 0.678
+- MSE   : 0.775
+- RMSE  : 0.880
+
+Dari data di atas diketahui bahwa model SVD memiliki nilai MAE 0.678 dan RMSE 0.880, dimana nilai tersebut sudah cukup baik untuk sistem rekomendasi berbasis Machine Learning. Untuk dapat meningkatkan performa model berbasis Neural Network dapat dilakukan. 
 
 ## Referensi
 
-[1] [Work Institue. Retention Report 2019. Report. 2019.](https://info.workinstitute.com/hubfs/2019%20Retention%20Report/Work%20Institute%202019%20Retention%20Report%20final-1.pdf)
+[1] [Halder, Sajal; et.al. Movie Recommendation System Based on Movie Swarm. Second International Conference on Cloud and Green Computing. 2012.](https://ieeexplore.ieee.org/document/6382910)
 
-[2] [Al-suraihi, Walid Abdullah; et.al. Employee Turnover: Causes, Importance and Retention Strategies. European Journal of Business Management and Research, Vol. 6, Issue 3, June 2021.](https://www.researchgate.net/publication/352390912_Employee_Turnover_Causes_Importance_and_Retention_Strategies)
+[2] [Reddy; et.al. Content-Based Movie Recommendation System Using Genre Correlation. Smart Innovation, Systems and Technologies. 2018.](https://www.researchgate.net/publication/331966843_Content-Based_Movie_Recommendation_System_Using_Genre_Correlation)
 
-[3] [Basariya, s. Rabiyathul; Ahmed, Ramyar Rzgar. A STUDY ON ATTRITION – TURNOVER INTENTIONS OF EMPLOYEES. International Journal of Civil Engineering and Technology, Volume 10, Issue 01, January 2019, pp. 2594–2601.](https://www.researchgate.net/publication/333104347_A_STUDY_ON_ATTRITION_-_TURNOVER_INTENTIONS_OF_EMPLOYEES)
+[3] [Schafer, Ben; et.al. Collaborative Filtering Recommender Systems. The Adaptive Web, LNCS 4321, pp. 291 – 324. 2007.](https://www.researchgate.net/publication/200121027_Collaborative_Filtering_Recommender_Systems)
