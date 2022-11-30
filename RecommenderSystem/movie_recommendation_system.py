@@ -43,7 +43,7 @@ nltk.download('punkt')
 !unzip "MoviesDataset.zip" -d MoviesDataset
 
 df_movies = pd.read_csv('MoviesDataset/movies.csv')
-df_movies.head(10)
+df_movies.head(5)
 
 df_ratings = pd.read_csv('MoviesDataset/ratings.csv')
 df_ratings.head()
@@ -81,9 +81,11 @@ print("Total NA movies dataframe: " + str(df_movies.isna().sum().sum()))
 print("Total Null ratings dataframe: " + str(df_ratings.isnull().sum().sum()))
 print("Total NA ratings dataframe: " + str(df_ratings.isna().sum().sum()))
 
-"""Tidak ada data yang kosong
+"""Tidak ada data yang kosong"""
 
-### Univariate Analysis
+df_ratings.describe()
+
+"""### Univariate Analysis
 
 #### Kolom Genre
 
@@ -119,32 +121,43 @@ df_ratings['rating'].value_counts().plot.bar(xlabel='Rating', ylabel='Total', ti
 
 ## Data Preparation
 
-Diketahui dari proses sebelumnya bahwa, tidak ada data yang kosong (Null/NA). Namun terdapat film yang memiliki Genre **(not listed)** sehingga film dengan genre tersebut akan didrop. Selanjutnya kita juga akan melakukan pengecekan duplikasi.
+### Membuang data duplikasi
+
+Diketahui dari proses sebelumnya bahwa terdapat film dengan judul yang sama (duplikasi) sehingga film-film tersebut akan dijadikan 1. Sedangkan tidak ada data duplikasi pada ratings
 """
 
-df_movies[df_movies.duplicated()]
+df_movies[df_movies.title.duplicated()]
 
 df_ratings[df_ratings.duplicated()]
 
-"""Baik dari movies dan juga use rating tidak ada duplikasi. Sehingga data yang didrop hanyalah pada bagian genre yang tidak terdaftar pada dataframe movies dan juga timestamp pada dataframe rating (karena tidak diggunakan)"""
+df_movies = df_movies[~df_movies.title.duplicated()]
+df_movies.head()
+
+df_movies.nunique()
+
+"""### Membuang data yang tidak diperlukan
+
+Diketahui dari proses sebelumnya bahwa, tidak ada data yang kosong (Null/NA). Namun terdapat film yang memiliki Genre **(not listed)** sehingga film dengan genre tersebut akan didrop, yaitu pada bagian genre yang tidak terdaftar pada dataframe movies dan juga timestamp pada dataframe rating (karena tidak diggunakan)
+"""
 
 df_movies = df_movies[df_movies['genres'] != '(no genres listed)']
-df_movies
+df_movies.head(100)
 
 df_movies.info()
 
 df_ratings.drop('timestamp', axis=1, inplace=True)
 df_ratings.head()
 
-"""Untuk melakukan collaborative filtering, data frame ratings akan digabungkan dengan dataframe movies"""
+"""### Merge Dataset
+
+Untuk melakukan collaborative filtering, data frame ratings akan digabungkan dengan dataframe movies
+"""
 
 df_combine = pd.merge(df_ratings, df_movies, on='movieId', how='left')
 # df_combine.drop(['title', 'genres'], axis=1, inplace=True)
 df_combine
 
-"""## Modeling
-
-### Content Based Filtering
+"""### Tokenisasi dan Bank Token Content Based Filtering
 
 Pada Content Based Filtering kita hanya akan menggunakan Dataframe movies
 """
@@ -153,7 +166,21 @@ Pada Content Based Filtering kita hanya akan menggunakan Dataframe movies
 bow = CountVectorizer(stop_words="english", tokenizer=word_tokenize)
 bank = bow.fit_transform(df_movies.genres)
 
-"""#### Step 1: Encode """
+"""### Train Test Split Collaborative Filtering"""
+
+df_combine_new = df_combine.copy()
+df_combine_new.drop(['title', 'genres'], axis=1, inplace=True)
+
+data = Dataset.load_from_df(df_combine_new, Reader(rating_scale=(0.5, 5)))
+
+trainset, testset = train_test_split(data, test_size=0.3, random_state=42)
+
+"""## Modeling
+
+### Content Based Filtering
+
+#### Step 1: Encode
+"""
 
 idx = 0
 content = df_movies.loc[idx, 'genres']
@@ -207,19 +234,12 @@ contentrec.fit()
 
 contentrec.recommend(1, topk=10)
 
-"""film dengan index 2 adalah Jumanji (1995)	dengan Adventure|Children|Fantasy, dari 10 rekomendasi yang diberikan. terdapat 9 film dengan genre yang sama persis. Hanya 1 film saja yang memiliki genre yang berbeda.
+"""film dengan index 1 adalah Jumanji (1995)	dengan Adventure|Children|Fantasy, dari 10 rekomendasi yang diberikan. terdapat 8 film dengan genre yang hampir sama. Hanya 2 film saja yang memiliki genre yang berbeda.
 
 ### Collaborative Filtering
 
 Collaborative Filtering kali ini akan menggunakan model SVD
 """
-
-df_combine_new = df_combine.copy()
-df_combine_new.drop(['title', 'genres'], axis=1, inplace=True)
-
-data = Dataset.load_from_df(df_combine_new, Reader(rating_scale=(0, 5)))
-
-trainset, testset = train_test_split(data, test_size=0.3, random_state=42)
 
 model = SVD(random_state=42)
 model.fit(trainset)
@@ -278,13 +298,13 @@ collrecs.recommend(0, topk=10)
 Evaluasi yang digunakan pada Content Based Filtering adalah Precission dimana: \
 `P = Jumlah rekomendasi yang relevan/Jumlah rekomendasi`
 
-kita akan melakukan rekomendasi sebanyak 30 dan akan melihat jumlah yang relevan
+kita akan melakukan rekomendasi sebanyak 20 dan akan melihat jumlah yang relevan
 """
 
-contentrec.recommend(0, topk=30)
+contentrec.recommend(1, topk=20)
 
-"""Pada contoh di diatas dari 30 film yang direkomendasikan ada 25 film yang relevan, dan 5 yang tidak sehingga Precisionnya <br>
-`P = 25/30 = 0.83`
+"""Pada contoh di diatas dari 20 film yang direkomendasikan ada 14 film yang relevan, dan 6 yang tidak sehingga Precisionnya <br>
+`P = 14/20 = 0.7 = 70%`
 
 ### Collaborative Filtering
 
@@ -301,9 +321,9 @@ df_test.head()
 mae = mean_absolute_error(df_test.Rating_actual, df_test.Rating_predictions)
 mse = mean_squared_error(df_test.Rating_actual, df_test.Rating_predictions)
 rms = sqrt(mse)
-print(f"MAE: {mae}\nMSE: {mse}\nRMS :{rms}")
+print(f"MAE: {mae}\nMSE: {mse}\nRMSE :{rms}")
 
 """## Kesimpulan
 
-Meskipun tidak dapat dibandingan secara langsung (Head to Head) antara Content based filtering dan juga Collaborative Filtering. Namun hasil evaluasi metrik pada keduanya cukup bagus dimana Contant-Based Memiliki Presisi sebesar 0.83 dan RMS 0.88 pada Collaborative Filtering
+Meskipun tidak dapat dibandingan secara langsung (Head to Head) antara Content based filtering dan juga Collaborative Filtering. Namun hasil evaluasi metrik pada keduanya cukup bagus dimana Contant-Based Memiliki Presisi sebesar 70% dan RMSE 0.88 pada Collaborative Filtering
 """
